@@ -1,6 +1,6 @@
 // lib/screens/home_screen.dart
 
-import 'package:flutter/material.dart';
+import 'package/flutter/material.dart';
 import '../models/feature_item_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -45,137 +45,224 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(icon: Icons.find_in_page, title: 'HSN/SAC Finder', color: Colors.red),
       FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue),
     ];
+    
+    const int initialItemCount = 8;
 
-    const int initialItemCount = 8; // Show 2 rows initially
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final double width = constraints.maxWidth;
+        int crossAxisCount;
+        double childAspectRatio;
 
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: [
-        // Top Document Cards
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: documents.map((item) => Expanded(
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Icon(item.icon, color: item.color, size: 30),
-                    const SizedBox(height: 8),
-                    Text('${item.title} ->', textAlign: TextAlign.center),
-                  ],
+        if (width > 1200) {
+          crossAxisCount = 8;
+          childAspectRatio = 1.1; 
+        } else if (width > 800) {
+          crossAxisCount = 6;
+          childAspectRatio = 1; 
+        } else {
+          crossAxisCount = 4;
+          childAspectRatio = 0.85; 
+        }
+        
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1400),
+            child: ListView(
+              padding: const EdgeInsets.all(24.0),
+              children: [
+                Row(
+                  children: documents.map((item) => Expanded(
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                        child: Column(
+                          children: [
+                            Icon(item.icon, color: item.color, size: 32),
+                            const SizedBox(height: 12),
+                            Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )).toList(),
                 ),
-              ),
-            ),
-          )).toList(),
-        ),
-        const SizedBox(height: 24),
+                const SizedBox(height: 32),
 
-        // Other Documents
-        _buildSectionHeader('Other Documents'),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            childAspectRatio: 1,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: _showAllDocuments ? otherDocuments.length : (otherDocuments.length > initialItemCount ? initialItemCount : otherDocuments.length),
-          itemBuilder: (context, index) {
-            return _buildGridItem(context, otherDocuments[index]);
-          },
-        ),
-        const SizedBox(height: 16),
-
-        // Show "View More" / "View Less" button if there are more items
-        if (otherDocuments.length > initialItemCount)
-          Center(
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  _showAllDocuments = !_showAllDocuments;
-                });
-              },
-              child: Text(
-                _showAllDocuments ? 'View Less' : 'View More',
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.bold,
+                _buildSectionHeader('Other Documents'),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: childAspectRatio,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: _showAllDocuments ? otherDocuments.length : (otherDocuments.length > initialItemCount ? initialItemCount : otherDocuments.length),
+                  itemBuilder: (context, index) {
+                    return _buildGridItem(context, otherDocuments[index]);
+                  },
                 ),
-              ),
+                const SizedBox(height: 8),
+
+                if (otherDocuments.length > initialItemCount)
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _showAllDocuments = !_showAllDocuments;
+                        });
+                      },
+                      child: Text(
+                        _showAllDocuments ? 'View Less' : 'View More',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 24),
+
+                _buildSectionHeader('More'),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: childAspectRatio,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                  ),
+                  itemCount: moreOptions.length,
+                  itemBuilder: (context, index) {
+                    return _buildGridItem(context, moreOptions[index]);
+                  },
+                ),
+                const SizedBox(height: 32),
+
+                _buildQuickLinksSection(context),
+              ],
             ),
           ),
-        const SizedBox(height: 24),
-
-        // More Section
-        _buildSectionHeader('More'),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            childAspectRatio: 1,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: moreOptions.length,
-          itemBuilder: (context, index) {
-            return _buildGridItem(context, moreOptions[index]);
-          },
-        ),
-        const SizedBox(height: 24),
-
-        // Ad Banner
-        Card(
-          color: Colors.transparent,
-          elevation: 0,
-          clipBehavior: Clip.antiAlias,
-          child: Image.network('https://i.imgur.com/K72V3oP.png'), // Placeholder URL for the ad banner
-        ),
-        const SizedBox(height: 80), // Space for the floating action button
-      ],
+        );
+      },
     );
   }
 
+  Widget _buildQuickLinksSection(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Quick Links',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {}),
+                _buildQuickLinkItem(context, icon: Icons.summarize_outlined, label: 'Sale Report', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/saleReport')),
+                _buildQuickLinkItem(context, icon: Icons.settings_outlined, label: 'Txn Settings', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/txnSettings')),
+                _buildQuickLinkItem(context, icon: Icons.arrow_forward, label: 'Show All', color: Colors.blue.shade400, onTap: () {}),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickLinkItem(BuildContext context, {required IconData icon, required String label, required Color color, required VoidCallback onTap}) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 32),
+            ),
+            const SizedBox(height: 12),
+            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+          ],
+        ),
+      ),
+    );
+  }
+  
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
       ),
     );
   }
 
   Widget _buildGridItem(BuildContext context, FeatureItemModel item) {
+    bool isMobile = MediaQuery.of(context).size.width < 700;
+
     return InkWell(
       onTap: () {
-        // TODO: Handle navigation or action for this item
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('${item.title} tapped!')),
         );
       },
-      borderRadius: BorderRadius.circular(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            backgroundColor: item.color.withOpacity(0.15),
-            radius: 25,
-            child: Icon(item.icon, color: item.color, size: 28),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            item.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          ),
-        ],
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+         decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircleAvatar(
+              backgroundColor: item.color.withOpacity(0.15),
+              radius: isMobile ? 24 : 28,
+              child: Icon(item.icon, color: item.color, size: isMobile ? 26 : 30),
+            ),
+            const SizedBox(height: 8), 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                item.title,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: isMobile ? 11 : 13, fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
