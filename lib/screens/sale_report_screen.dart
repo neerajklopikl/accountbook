@@ -13,25 +13,6 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
   DateTime _startDate = DateTime.now().subtract(const Duration(days: 30));
   DateTime _endDate = DateTime.now();
 
-  void _showFilterOptions() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Wrap(
-          children: [
-            ListTile(title: const Text('Select'), onTap: () {}),
-            const Divider(),
-            ListTile(title: const Text('Today'), onTap: () => setState(() { _selectedFilter = 'Today'; Navigator.pop(context); })),
-            ListTile(title: const Text('This Week'), onTap: () => setState(() { _selectedFilter = 'This Week'; Navigator.pop(context); })),
-            ListTile(title: const Text('This Month'), onTap: () => setState(() { _selectedFilter = 'This Month'; Navigator.pop(context); })),
-            ListTile(title: const Text('This Quarter'), onTap: () => setState(() { _selectedFilter = 'This Quarter'; Navigator.pop(context); })),
-            ListTile(title: const Text('This Financial Year'), onTap: () => setState(() { _selectedFilter = 'This Financial Year'; Navigator.pop(context); })),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -68,8 +49,12 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
           // Filter Bar
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // FIX: Replaced Row with Wrap to prevent horizontal overflow on smaller screens
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 DropdownButton<String>(
                   value: _selectedFilter,
@@ -87,10 +72,11 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
                   }).toList(),
                 ),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    TextButton(onPressed: ()=> _selectDate(context, true), child: Text(DateFormat('dd/MM/yyyy').format(_startDate))),
+                    TextButton(onPressed: ()=> _selectDate(context, true), child: Text(DateFormat('dd/MM/yy').format(_startDate))),
                     const Text('TO'),
-                    TextButton(onPressed: ()=> _selectDate(context, false), child: Text(DateFormat('dd/MM/yyyy').format(_endDate))),
+                    TextButton(onPressed: ()=> _selectDate(context, false), child: Text(DateFormat('dd/MM/yy').format(_endDate))),
                   ],
                 ),
                 ElevatedButton.icon(

@@ -1,6 +1,6 @@
 // lib/screens/home_screen.dart
 
-import 'package/flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../models/feature_item_model.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -56,36 +56,48 @@ class _HomeScreenState extends State<HomeScreen> {
 
         if (width > 1200) {
           crossAxisCount = 8;
-          childAspectRatio = 1.1; 
+          childAspectRatio = 1.0; 
         } else if (width > 800) {
           crossAxisCount = 6;
-          childAspectRatio = 1; 
+          childAspectRatio = 1.0; 
         } else {
           crossAxisCount = 4;
-          childAspectRatio = 0.85; 
+          childAspectRatio = 0.9; // Adjusted for better text wrapping on mobile
         }
         
         return Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1400),
             child: ListView(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(16.0),
               children: [
-                Row(
-                  children: documents.map((item) => Expanded(
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-                        child: Column(
-                          children: [
-                            Icon(item.icon, color: item.color, size: 32),
-                            const SizedBox(height: 12),
-                            Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
-                          ],
+                // FIX: Replaced Row with Wrap to prevent overflow on smaller screens.
+                Wrap(
+                  spacing: 16.0,
+                  runSpacing: 16.0,
+                  alignment: WrapAlignment.center,
+                  children: documents.map((item) => ConstrainedBox(
+                    constraints: const BoxConstraints(minWidth: 120, maxWidth: 250),
+                    child: Flex(
+                      direction: Axis.horizontal,
+                      children: [
+                        Expanded(
+                          child: Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                              child: Column(
+                                children: [
+                                  Icon(item.icon, color: item.color, size: 32),
+                                  const SizedBox(height: 12),
+                                  Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   )).toList(),
                 ),
@@ -167,8 +179,12 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // FIX: Replaced Row with Wrap to allow items to reflow on smaller screens.
+            Wrap(
+              alignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 16.0,
+              runSpacing: 16.0,
               children: [
                 _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {}),
                 _buildQuickLinkItem(context, icon: Icons.summarize_outlined, label: 'Sale Report', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/saleReport')),
@@ -254,9 +270,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 item.title,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: isMobile ? 11 : 13, fontWeight: FontWeight.w500),
+                style: TextStyle(fontSize: isMobile ? 12 : 14, fontWeight: FontWeight.w500), // Slightly increased font size
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                maxLines: 2, // Allow text to wrap to a second line
               ),
             ),
           ],
@@ -265,4 +281,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
