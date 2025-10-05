@@ -3,7 +3,9 @@ import '../models/feature_item_model.dart';
 
 class FeatureGridItem extends StatelessWidget {
   final FeatureItemModel item;
-  const FeatureGridItem({super.key, required this.item});
+  final VoidCallback? onTap; // Added onTap callback
+
+  const FeatureGridItem({super.key, required this.item, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +13,7 @@ class FeatureGridItem extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: InkWell(
-        onTap: () {
-          // TODO: Handle feature tap
-        },
+        onTap: onTap, // Use the onTap callback here
         borderRadius: BorderRadius.circular(15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

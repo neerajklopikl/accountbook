@@ -5,6 +5,8 @@ import '../widgets/greeting_header.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/transaction_item.dart';
 import '../widgets/feature_grid_item.dart';
+import 'add_sale_screen.dart'; 
+import 'add_purchase_screen.dart'; // Import the new screen
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -54,7 +56,18 @@ class HomeScreen extends StatelessWidget {
                   ),
                   itemCount: features.length,
                   itemBuilder: (context, index) {
-                    return FeatureGridItem(item: features[index]);
+                    final item = features[index];
+                    return FeatureGridItem(
+                      item: item,
+                      onTap: () {
+                        if (item.title == 'Add Sale') {
+                          Navigator.pushNamed(context, '/addSale');
+                        } else if (item.title == 'Add Purchase') {
+                          Navigator.pushNamed(context, '/addPurchase');
+                        }
+                        // TODO: Handle other feature taps
+                      },
+                    );
                   },
                 ),
                 const SizedBox(height: 24),
@@ -92,4 +105,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

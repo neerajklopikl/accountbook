@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screens/main_screen.dart';
+import 'screens/add_sale_screen.dart';
+import 'screens/add_item_screen.dart';
+import 'screens/item_settings_screen.dart';
+import 'screens/add_purchase_screen.dart';
+import 'screens/sale_report_screen.dart'; // Import new screen
+import 'screens/purchase_report_screen.dart'; // Import new screen
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +30,16 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MainScreen(),
+        '/addSale': (context) => const AddSaleScreen(),
+        '/addPurchase': (context) => const AddPurchaseScreen(),
+        '/addItem': (context) => const AddItemScreen(),
+        '/itemSettings': (context) => const ItemSettingsScreen(),
+        '/saleReport': (context) => const SaleReportScreen(),
+        '/purchaseReport': (context) => const PurchaseReportScreen(),
+      },
     );
   }
 }

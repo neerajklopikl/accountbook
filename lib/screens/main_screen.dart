@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'reports_screen.dart';
+import 'reports_list_screen.dart'; // Changed from reports_screen.dart
 import 'profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,8 +15,8 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    ReportsScreen(), // Placeholder screen
-    ProfileScreen(), // Placeholder screen
+    ReportsListScreen(), // Use the new list screen
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -58,7 +58,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildNavItem(IconData icon, String label, int index) {
-    // A simple hack to make the placeholder items work with our 3 screens
     final effectiveIndex = index > 1 ? (index - 1) : index;
 
     return IconButton(
