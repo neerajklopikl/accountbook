@@ -131,6 +131,7 @@ class StockDashboardScreen extends StatelessWidget {
     );
   }
 
+  // MODIFIED METHOD
   void _showMoreOptionsSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -164,51 +165,67 @@ class StockDashboardScreen extends StatelessWidget {
 
         return Container(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('More Options',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1.1,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('More Options',
+                        style:
+                            TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
                 ),
-                itemCount: moreOptions.length,
-                itemBuilder: (context, index) {
-                  final item = moreOptions[index];
-                  Widget gridItem = FeatureGridItem(item: item, onTap: () {});
-                  if (item.title == 'Additional Fields') {
-                    gridItem = Stack(
-                      children: [
-                        gridItem,
-                        const Positioned(
-                          top: 4,
-                          right: 4,
-                          child: Icon(Icons.workspace_premium, color: Colors.amber, size: 16),
-                        )
-                      ],
-                    );
-                  }
-                  return gridItem;
-                },
-              ),
-            ],
+                const SizedBox(height: 16),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 1, // Adjusted for better spacing with icon on top
+                  ),
+                  itemCount: moreOptions.length,
+                  itemBuilder: (context, index) {
+                    final item = moreOptions[index];
+
+                    if (item.title == 'Additional Fields') {
+                      // Use a Stack to position the premium icon above the card
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          // Add padding to make space for the icon on top
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: FeatureGridItem(item: item, onTap: () {}),
+                          ),
+                          Positioned(
+                            top: 0,
+                            child: Icon(
+                              Icons.military_tech, // Ribbon-like icon
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: FeatureGridItem(item: item, onTap: () {}),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
