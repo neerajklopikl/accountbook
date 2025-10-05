@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(icon: Icons.find_in_page, title: 'HSN/SAC Finder', color: Colors.red),
       FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue),
     ];
-    
+
     const int initialItemCount = 8;
 
     return LayoutBuilder(
@@ -56,22 +56,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
         if (width > 1200) {
           crossAxisCount = 8;
-          childAspectRatio = 1.0; 
-        } else if (width > 800) {
+          childAspectRatio = 1.0;
+        } else if (width > 600) {
           crossAxisCount = 6;
-          childAspectRatio = 1.0; 
+          childAspectRatio = 0.9;
         } else {
           crossAxisCount = 4;
-          childAspectRatio = 0.9; // Adjusted for better text wrapping on mobile
+          childAspectRatio = 0.85;
         }
-        
+
         return Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1400),
             child: ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
-                // FIX: Replaced Row with Wrap to prevent overflow on smaller screens.
                 Wrap(
                   spacing: 16.0,
                   runSpacing: 16.0,
@@ -85,14 +84,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Card(
                             elevation: 4,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-                              child: Column(
-                                children: [
-                                  Icon(item.icon, color: item.color, size: 32),
-                                  const SizedBox(height: 12),
-                                  Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
-                                ],
+                            child: InkWell(
+                              onTap: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('${item.title} clicked!')),
+                                );
+                              },
+                              borderRadius: BorderRadius.circular(12),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
+                                child: Column(
+                                  children: [
+                                    Icon(item.icon, color: item.color, size: 32),
+                                    const SizedBox(height: 12),
+                                    Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -179,17 +186,24 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
-            // FIX: Replaced Row with Wrap to allow items to reflow on smaller screens.
             Wrap(
-              alignment: MainAxisAlignment.spaceAround,
+              alignment: WrapAlignment.spaceAround,
               crossAxisAlignment: WrapCrossAlignment.center,
               spacing: 16.0,
               runSpacing: 16.0,
               children: [
-                _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {}),
+                _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Add Txn clicked!')),
+                  );
+                }),
                 _buildQuickLinkItem(context, icon: Icons.summarize_outlined, label: 'Sale Report', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/saleReport')),
                 _buildQuickLinkItem(context, icon: Icons.settings_outlined, label: 'Txn Settings', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/txnSettings')),
-                _buildQuickLinkItem(context, icon: Icons.arrow_forward, label: 'Show All', color: Colors.blue.shade400, onTap: () {}),
+                _buildQuickLinkItem(context, icon: Icons.arrow_forward, label: 'Show All', color: Colors.blue.shade400, onTap: () {
+                   ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Show All clicked!')),
+                  );
+                }),
               ],
             ),
           ],
@@ -222,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildSectionHeader(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -236,46 +250,46 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildGridItem(BuildContext context, FeatureItemModel item) {
     bool isMobile = MediaQuery.of(context).size.width < 700;
 
-    return InkWell(
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${item.title} tapped!')),
-        );
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, 2),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${item.title} clicked!')),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                backgroundColor: item.color.withOpacity(0.15),
+                radius: isMobile ? 22 : 26,
+                child: Icon(item.icon, color: item.color, size: isMobile ? 24 : 28),
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: Text(
+                  item.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: isMobile ? 12 : 14, fontWeight: FontWeight.w500),
+                ),
               ),
             ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              backgroundColor: item.color.withOpacity(0.15),
-              radius: isMobile ? 24 : 28,
-              child: Icon(item.icon, color: item.color, size: isMobile ? 26 : 30),
-            ),
-            const SizedBox(height: 8), 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Text(
-                item.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: isMobile ? 12 : 14, fontWeight: FontWeight.w500), // Slightly increased font size
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2, // Allow text to wrap to a second line
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

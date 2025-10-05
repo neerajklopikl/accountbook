@@ -37,9 +37,12 @@ class StockDashboardScreen extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+        // FIX: Replaced Row with Wrap to prevent horizontal overflow on mobile.
+        child: Wrap(
+          alignment: WrapAlignment.spaceAround,
+          runSpacing: 16.0, // Adds vertical space between wrapped lines
+          spacing: 8.0, // Adds horizontal space between items on the same line
           children: [
             _buildQuickLinkItem(
                 context, Icons.store_outlined, 'Online Store', () {}),
@@ -61,7 +64,7 @@ class StockDashboardScreen extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -169,7 +172,6 @@ class StockDashboardScreen extends StatelessWidget {
 
         return Container(
           padding: const EdgeInsets.all(16.0),
-          // FIX: Wrap the Column with SingleChildScrollView to prevent overflow
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
