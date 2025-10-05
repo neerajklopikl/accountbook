@@ -11,9 +11,19 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.edit)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Edit clicked!')),
+            );
+          }, icon: const Icon(Icons.edit)),
+          IconButton(onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Notifications clicked!')),
+            );
+          }, icon: const Icon(Icons.notifications)),
+          IconButton(onPressed: () {
+            Navigator.pushNamed(context, '/settings');
+          }, icon: const Icon(Icons.settings)),
         ],
       ),
       body: ListView(
@@ -24,6 +34,15 @@ class ProfileScreen extends StatelessWidget {
           _buildImportantUtilitiesSection(context),
           _buildOthersSection(context),
           _buildAppVersion(context),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Logout'),
+            onTap: () {
+               ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logout clicked!')),
+              );
+            },
+          ),
         ],
       ),
     );

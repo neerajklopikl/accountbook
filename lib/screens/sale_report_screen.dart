@@ -40,8 +40,16 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
          actions: [
-          IconButton(icon: const Icon(Icons.picture_as_pdf), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.grid_on), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.picture_as_pdf), onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('PDF clicked!')),
+            );
+          }),
+          IconButton(icon: const Icon(Icons.grid_on), onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Grid clicked!')),
+            );
+          }),
         ],
       ),
       body: Column(
@@ -49,7 +57,6 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
           // Filter Bar
           Padding(
             padding: const EdgeInsets.all(8.0),
-            // FIX: Replaced Row with Wrap to prevent horizontal overflow on smaller screens
             child: Wrap(
               spacing: 8.0,
               runSpacing: 8.0,
@@ -80,7 +87,11 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
                   ],
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Filters clicked!')),
+                    );
+                  },
                   icon: const Icon(Icons.filter_list),
                   label: const Text('Filters'),
                 ),
@@ -116,6 +127,11 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
                       Text('Balance: ₹ 25.00'),
                     ],
                   ),
+                   onTap: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Lilawati sale clicked!')),
+                    );
+                  },
                 )
               ],
             ),
