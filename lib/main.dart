@@ -1,10 +1,12 @@
+// lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'screens/main_screen.dart';
 import 'screens/add_sale_screen.dart';
 import 'screens/add_item_screen.dart';
 import 'screens/item_settings_screen.dart';
 import 'screens/add_purchase_screen.dart';
-import 'screens/sale_report_screen.dart'; // Import new screen
+import 'screens/sale_report_screen.dart';
 import 'screens/purchase_report_screen.dart';
 import 'screens/day_book_screen.dart';
 import 'screens/all_transactions_screen.dart';
@@ -16,6 +18,21 @@ import 'screens/trial_balance_screen.dart';
 import 'screens/party_reports_screen.dart';
 import 'screens/gst_reports_screen.dart';
 import 'screens/stock_reports_screen.dart';
+
+// Import all the new screens
+import 'screens/transaction_settings_screen.dart';
+import 'screens/payment_in_screen.dart';
+import 'screens/sale_return_screen.dart';
+import 'screens/delivery_challan_screen.dart';
+import 'screens/estimate_quote_screen.dart';
+import 'screens/sale_order_screen.dart';
+import 'screens/sale_invoice_screen.dart';
+import 'screens/payment_out_screen.dart';
+import 'screens/purchase_return_screen.dart';
+import 'screens/purchase_order_screen.dart';
+import 'screens/expense_screen.dart';
+import 'screens/other_income_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -59,6 +76,20 @@ class MyApp extends StatelessWidget {
         '/partyReports': (context) => const PartyReportsScreen(),
         '/gstReports': (context) => const GstReportsScreen(),
         '/stockReports': (context) => const StockReportsScreen(),
+
+        // Add all the new routes here
+        '/txnSettings': (context) => const TransactionSettingsScreen(),
+        '/paymentIn': (context) => const PaymentInScreen(),
+        '/saleReturn': (context) => const SaleReturnScreen(),
+        '/deliveryChallan': (context) => const DeliveryChallanScreen(),
+        '/estimateQuote': (context) => const EstimateQuoteScreen(),
+        '/saleOrder': (context) => const SaleOrderScreen(),
+        '/saleInvoice': (context) => const SaleInvoiceScreen(),
+        '/paymentOut': (context) => const PaymentOutScreen(),
+        '/purchaseReturn': (context) => const PurchaseReturnScreen(),
+        '/purchaseOrder': (context) => const PurchaseOrderScreen(),
+        '/expense': (context) => const ExpenseScreen(),
+        '/otherIncome': (context) => const OtherIncomeScreen(),
       },
     );
   }
