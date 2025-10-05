@@ -5,44 +5,28 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Using a Scaffold to provide the basic app structure
     return Scaffold(
-      // Using a custom background color to match the modern theme
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      // The AppBar at the top of the screen
       appBar: AppBar(
         title: const Text('My Profile'),
-        // Setting the background color of the AppBar to match the app's primary color
         backgroundColor: Theme.of(context).primaryColor,
-        // Making the AppBar text white for better contrast
         foregroundColor: Colors.white,
-        // Removing the shadow for a flatter look
         elevation: 0,
       ),
-      // The body of the screen, wrapped in a SingleChildScrollView to prevent overflow on smaller devices
-      // while designing it to fit on a typical screen.
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header section with user's avatar and name
             _buildProfileHeader(context),
             const SizedBox(height: 20),
-            // Menu items for profile management
             _buildProfileMenu(context),
-            const SizedBox(height: 30),
-            // Logout button at the bottom of the screen
-            _buildLogoutButton(context),
           ],
         ),
       ),
     );
   }
 
-  // Widget for the profile header section
   Widget _buildProfileHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 24.0),
-      // Styling the header with a gradient that matches the app's theme
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.only(
@@ -50,10 +34,9 @@ class ProfileScreen extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
       ),
-      child: const Column(
+      child: Column(
         children: [
-          // User's avatar
-          CircleAvatar(
+          const CircleAvatar(
             radius: 50,
             backgroundColor: Colors.white,
             child: Icon(
@@ -62,9 +45,8 @@ class ProfileScreen extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          SizedBox(height: 12),
-          // User's name
-          Text(
+          const SizedBox(height: 12),
+          const Text(
             'John Doe',
             style: TextStyle(
               fontSize: 22,
@@ -72,88 +54,144 @@ class ProfileScreen extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          // User's email
-          Text(
+          const Text(
             'john.doe@example.com',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white70,
             ),
           ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildHeaderInfo('My Business', 'Business Name'),
+              _buildHeaderInfo('Contact Details', '+91 9876543210'),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  // Widget for the list of profile menu options
+  Widget _buildHeaderInfo(String title, String subtitle) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          subtitle,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.white70,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildProfileMenu(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          children: [
-            // Each menu item is a ListTile for consistent styling
-            _buildMenuOption(
-              icon: Icons.edit,
-              title: 'Edit Profile',
-              onTap: () {
-                // TODO: Navigate to Edit Profile screen
-              },
-            ),
-            const Divider(height: 0),
-            _buildMenuOption(
-              icon: Icons.lock,
-              title: 'Change Password',
-              onTap: () {
-                // TODO: Show Change Password dialog or screen
-              },
-            ),
-            const Divider(height: 0),
-            _buildMenuOption(
-              icon: Icons.notifications,
-              title: 'Notifications',
-              onTap: () {
-                // TODO: Navigate to Notification Settings screen
-              },
-            ),
-            const Divider(height: 0),
-            _buildMenuOption(
-              icon: Icons.language,
-              title: 'Language',
-              onTap: () {
-                // TODO: Show Language selection dialog
-              },
-            ),
-             const Divider(height: 0),
-            _buildMenuOption(
-              icon: Icons.help_outline,
-              title: 'Help & Support',
-              onTap: () {
-                // TODO: Navigate to Help screen
-              },
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          _buildMenuCategory(
+            title: 'Business Details',
+            children: [
+              _buildMenuOption(
+                icon: Icons.store,
+                title: 'Business Name',
+                subtitle: 'Business Name',
+                onTap: () {},
+              ),
+              _buildMenuOption(
+                icon: Icons.phone,
+                title: 'Contact Number',
+                subtitle: '+91 9876543210',
+                onTap: () {},
+              ),
+              _buildMenuOption(
+                icon: Icons.email,
+                title: 'Business Email',
+                subtitle: 'business.email@example.com',
+                onTap: () {},
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildMenuCategory(
+            title: 'Settings',
+            children: [
+              _buildMenuOption(
+                icon: Icons.settings,
+                title: 'App Settings',
+                onTap: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
+              ),
+              _buildMenuOption(
+                icon: Icons.lock,
+                title: 'Change Password',
+                onTap: () {},
+              ),
+              _buildMenuOption(
+                icon: Icons.logout,
+                title: 'Logout',
+                onTap: () {},
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  // Reusable widget for a single menu option
+  Widget _buildMenuCategory(
+      {required String title, required List<Widget> children}) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Divider(height: 0),
+          ...children,
+        ],
+      ),
+    );
+  }
+
   Widget _buildMenuOption(
       {required IconData icon,
       required String title,
+      String? subtitle,
       required VoidCallback onTap}) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
+      subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );
   }
 
-  // Widget for the logout button
   Widget _buildLogoutButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -162,7 +200,8 @@ class ProfileScreen extends StatelessWidget {
           // TODO: Implement logout functionality
         },
         icon: const Icon(Icons.logout, color: Colors.white),
-        label: const Text('Logout', style: TextStyle(color: Colors.white, fontSize: 16)),
+        label: const Text('Logout',
+            style: TextStyle(color: Colors.white, fontSize: 16)),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.redAccent,
           minimumSize: const Size(double.infinity, 50),
@@ -174,4 +213,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-

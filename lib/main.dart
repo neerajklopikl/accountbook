@@ -32,7 +32,7 @@ import 'screens/purchase_return_screen.dart';
 import 'screens/purchase_order_screen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/other_income_screen.dart';
-
+import 'screens/settings_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/partyReports': (context) => const PartyReportsScreen(),
         '/gstReports': (context) => const GstReportsScreen(),
         '/stockReports': (context) => const StockReportsScreen(),
+        '/settings': (context) => const SettingsScreen(),
 
         // Add all the new routes here
         '/txnSettings': (context) => const TransactionSettingsScreen(),
