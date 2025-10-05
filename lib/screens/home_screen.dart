@@ -64,6 +64,8 @@ class HomeScreen extends StatelessWidget {
                           Navigator.pushNamed(context, '/addSale');
                         } else if (item.title == 'Add Purchase') {
                           Navigator.pushNamed(context, '/addPurchase');
+                        } else if (item.title == 'Reports') {
+                          Navigator.pushNamed(context, '/reports');
                         }
                         // TODO: Handle other feature taps
                       },
