@@ -33,6 +33,8 @@ import 'screens/purchase_order_screen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/other_income_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/stock_dashboard_screen.dart'; // Added
+import 'screens/stock_summary_screen.dart'; // Added
 
 void main() {
   runApp(const MyApp());
@@ -77,6 +79,9 @@ class MyApp extends StatelessWidget {
         '/gstReports': (context) => const GstReportsScreen(),
         '/stockReports': (context) => const StockReportsScreen(),
         '/settings': (context) => const SettingsScreen(),
+        '/stockDashboard': (context) => const StockDashboardScreen(), // Added
+        '/stockSummary': (context) => const StockSummaryScreen(), // Added
+
 
         // Add all the new routes here
         '/txnSettings': (context) => const TransactionSettingsScreen(),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'reports_list_screen.dart'; // Changed from reports_screen.dart
+import 'reports_list_screen.dart';
 import 'profile_screen.dart';
+import 'stock_dashboard_screen.dart'; // Import the new screen
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,7 +16,8 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    ReportsListScreen(), // Use the new list screen
+    ReportsListScreen(),
+    StockDashboardScreen(), // Added stock screen
     ProfileScreen(),
   ];
 
@@ -58,16 +60,14 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildNavItem(IconData icon, String label, int index) {
-    final effectiveIndex = index > 1 ? (index - 1) : index;
-
     return IconButton(
       icon: Icon(
         icon,
-        color: _selectedIndex == effectiveIndex
+        color: _selectedIndex == index
             ? Theme.of(context).primaryColor
             : Colors.grey,
       ),
-      onPressed: () => _onItemTapped(effectiveIndex),
+      onPressed: () => _onItemTapped(index),
       tooltip: label,
     );
   }
