@@ -1,5 +1,6 @@
 // lib/screens/main_screen.dart
 
+import 'package:accountbook/screens/add_txn_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'reports_list_screen.dart';
@@ -29,6 +30,13 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _showAddTxnBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => const AddTxnBottomSheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -40,7 +48,9 @@ class _MainScreenState extends State<MainScreen> {
               title: const Text('My Company'),
               actions: [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                     Navigator.pushNamed(context, '/createInvoice');
+                  },
                   icon: const Icon(Icons.edit),
                   label: const Text('Create Invoice'),
                 ),
@@ -49,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
             drawer: const Drawer(),
             body: _widgetOptions.elementAt(_selectedIndex),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: _showAddTxnBottomSheet,
               backgroundColor: Theme.of(context).colorScheme.secondary,
               child: const Icon(Icons.add, color: Colors.white),
             ),
@@ -77,7 +87,9 @@ class _MainScreenState extends State<MainScreen> {
               title: const Text('My Company'),
               actions: [
                 TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                     Navigator.pushNamed(context, '/createInvoice');
+                  },
                   icon: const Icon(Icons.edit),
                   label: const Text('Create Invoice'),
                 ),
@@ -91,9 +103,7 @@ class _MainScreenState extends State<MainScreen> {
                   labelType: NavigationRailLabelType.all,
                   leading: FloatingActionButton(
                     elevation: 0,
-                    onPressed: () {
-                      // Add new transaction
-                    },
+                    onPressed: _showAddTxnBottomSheet,
                     child: const Icon(Icons.add),
                   ),
                   destinations: const [

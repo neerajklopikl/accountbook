@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../models/feature_item_model.dart';
+import '../widgets/add_transaction_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +13,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showAllDocuments = false;
+
+  void _showAddTransactionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return const AddTransactionSheet();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
               runSpacing: 16.0,
               children: [
                 _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {
-                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Add Txn clicked!')),
-                  );
+                   _showAddTransactionSheet(context);
                 }),
                 _buildQuickLinkItem(context, icon: Icons.summarize_outlined, label: 'Sale Report', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/saleReport')),
                 _buildQuickLinkItem(context, icon: Icons.settings_outlined, label: 'Txn Settings', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/txnSettings')),

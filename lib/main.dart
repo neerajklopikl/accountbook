@@ -33,9 +33,10 @@ import 'screens/other_income_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/stock_dashboard_screen.dart';
 import 'screens/stock_summary_screen.dart';
-import 'screens/e_invoice_login_screen.dart'; 
+import 'screens/e_invoice_login_screen.dart';
 import 'screens/quotation_list_screen.dart';
-import 'screens/quotation_filters_screen.dart'; // Import the new screen
+import 'screens/quotation_filters_screen.dart';
+import 'screens/p2p_transfer_screen.dart'; // Import the new screen
 
 void main() {
   runApp(const MyApp());
@@ -96,7 +97,8 @@ class MyApp extends StatelessWidget {
         '/purchaseOrder': (context) => const PurchaseOrderScreen(),
         '/expense': (context) => const ExpenseScreen(),
         '/otherIncome': (context) => const OtherIncomeScreen(),
-        '/eInvoiceLogin': (context) => const EInvoiceLoginScreen(), 
+        '/eInvoiceLogin': (context) => const EInvoiceLoginScreen(),
+        '/p2pTransfer': (context) => const P2PTransferScreen(), // Add new route
       },
     );
   }

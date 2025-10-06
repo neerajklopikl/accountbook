@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SaleReturnScreen extends StatefulWidget {
-  const SaleReturnScreen({super.key});
+class CreditNoteScreen extends StatefulWidget {
+  const CreditNoteScreen({super.key});
 
   @override
-  State<SaleReturnScreen> createState() => _SaleReturnScreenState();
+  State<CreditNoteScreen> createState() => _CreditNoteScreenState();
 }
 
-class _SaleReturnScreenState extends State<SaleReturnScreen> {
+class _CreditNoteScreenState extends State<CreditNoteScreen> {
   DateTime selectedDate = DateTime.now();
 
   Future<void> _selectDate(BuildContext context) async {
