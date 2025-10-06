@@ -18,8 +18,6 @@ import 'screens/trial_balance_screen.dart';
 import 'screens/party_reports_screen.dart';
 import 'screens/gst_reports_screen.dart';
 import 'screens/stock_reports_screen.dart';
-
-// Import all the new screens
 import 'screens/transaction_settings_screen.dart';
 import 'screens/payment_in_screen.dart';
 import 'screens/sale_return_screen.dart';
@@ -33,8 +31,9 @@ import 'screens/purchase_order_screen.dart';
 import 'screens/expense_screen.dart';
 import 'screens/other_income_screen.dart';
 import 'screens/settings_screen.dart';
-import 'screens/stock_dashboard_screen.dart'; // Added
-import 'screens/stock_summary_screen.dart'; // Added
+import 'screens/stock_dashboard_screen.dart';
+import 'screens/stock_summary_screen.dart';
+import 'screens/e_invoice_login_screen.dart'; // Import the new screen
 
 void main() {
   runApp(const MyApp());
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Account Book Pro',
+      title: 'AccountBook',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xFF1A237E), // A deep indigo
@@ -79,11 +78,8 @@ class MyApp extends StatelessWidget {
         '/gstReports': (context) => const GstReportsScreen(),
         '/stockReports': (context) => const StockReportsScreen(),
         '/settings': (context) => const SettingsScreen(),
-        '/stockDashboard': (context) => const StockDashboardScreen(), // Added
-        '/stockSummary': (context) => const StockSummaryScreen(), // Added
-
-
-        // Add all the new routes here
+        '/stockDashboard': (context) => const StockDashboardScreen(),
+        '/stockSummary': (context) => const StockSummaryScreen(),
         '/txnSettings': (context) => const TransactionSettingsScreen(),
         '/paymentIn': (context) => const PaymentInScreen(),
         '/saleReturn': (context) => const SaleReturnScreen(),
@@ -96,6 +92,7 @@ class MyApp extends StatelessWidget {
         '/purchaseOrder': (context) => const PurchaseOrderScreen(),
         '/expense': (context) => const ExpenseScreen(),
         '/otherIncome': (context) => const OtherIncomeScreen(),
+        '/eInvoiceLogin': (context) => const EInvoiceLoginScreen(), // Add the new route
       },
     );
   }
