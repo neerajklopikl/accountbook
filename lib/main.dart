@@ -99,7 +99,8 @@ class MyApp extends StatelessWidget {
             color: Color(0xFF212529),
           ),
         ),
-        cardTheme: CardTheme(
+        // FIX: Changed CardTheme to CardThemeData
+        cardTheme: CardThemeData(
           elevation: 0,
           color: Colors.white,
           shape: RoundedRectangleBorder(

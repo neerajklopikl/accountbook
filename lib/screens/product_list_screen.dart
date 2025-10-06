@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http; // FIX: Added http import
 
 // 1. Add a Product model to match the backend schema
 class Product {
@@ -40,6 +40,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Future<List<Product>> _fetchProducts() async {
     // For Android emulator, use 10.0.2.2 to access localhost
     // For iOS simulator or a real device, use your computer's local IP address
+    // FIX: Used http.get
     final response = await http.get(Uri.parse('http://10.0.2.2:5001/api/products'));
 
     if (response.statusCode == 200) {

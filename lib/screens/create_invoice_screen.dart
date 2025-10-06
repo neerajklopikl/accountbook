@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http; // FIX: Added http import
 
 // TODO: Move these data models to their own files
 class TransportDetails {
@@ -36,7 +36,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   Map<String, String> _additionalFields = {};
   OtherDetails? _otherDetails;
   BankDetails? _bankDetails;
-  String _termsAndConditions = '1. This is an electronically generated document.\n2. All disputes are subject';
+  String _termsAndConditions = '1. This is an electronically generated document.\\n2. All disputes are subject';
 
   Future<void> _saveInvoice() async {
     final invoiceData = {
@@ -52,6 +52,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
     };
 
     try {
+      // FIX: Used http.post
       final response = await http.post(
         Uri.parse('http://10.0.2.2:5001/api/invoices'),
         headers: {'Content-Type': 'application/json'},
@@ -72,7 +73,6 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
         SnackBar(content: Text('Error saving invoice: $e'), backgroundColor: Colors.red),
       );
     }
-
   }
 
   @override

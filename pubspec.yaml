@@ -4,12 +4,12 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: '>=3.2.3 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  
+
   intl: ^0.19.0
   cupertino_icons: ^1.0.8
 
@@ -17,6 +17,9 @@ dependencies:
   firebase_core: ^3.3.0
   cloud_firestore: ^5.1.0
   firebase_auth: ^5.1.2
+  
+  # FIX: Added http package
+  http: ^1.2.1
 
 
 dev_dependencies:
@@ -27,4 +30,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
