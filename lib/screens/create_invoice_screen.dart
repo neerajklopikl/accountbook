@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddSaleScreen extends StatefulWidget {
-  const AddSaleScreen({super.key});
+class CreateInvoiceScreen extends StatefulWidget {
+  const CreateInvoiceScreen({super.key});
 
   @override
-  State<AddSaleScreen> createState() => _AddSaleScreenState();
+  State<CreateInvoiceScreen> createState() => _CreateInvoiceScreenState();
 }
 
-class _AddSaleScreenState extends State<AddSaleScreen> {
+class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,7 +152,7 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                 DropdownMenuItem(
                   value: '1',
                   child: Text(
-                    '1. This is an electronically generated document.\n2. All disputes are subject',
+                    '1. This is an electronically generated document.\\n2. All disputes are subject',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),
