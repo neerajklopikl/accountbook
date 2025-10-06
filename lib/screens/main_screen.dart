@@ -33,9 +33,37 @@ class _MainScreenState extends State<MainScreen> {
   void _showAddTxnBottomSheet() {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true, // UPDATED: Allow sheet to be taller
+      backgroundColor: Colors.transparent, // UPDATED: For rounded corners
       builder: (context) => const AddTxnBottomSheet(),
     );
   }
+
+  // UPDATED: Extracted AppBar into a separate method for clarity
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text('My Company'),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: TextButton.icon(
+            onPressed: () {
+              Navigator.pushNamed(context, '/createInvoice');
+            },
+            icon: const Icon(Icons.add_circle_outline),
+            label: const Text('Create'),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +72,8 @@ class _MainScreenState extends State<MainScreen> {
         // --- MOBILE LAYOUT (< 700 pixels wide) ---
         if (constraints.maxWidth < 700) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('My Company'),
-              actions: [
-                TextButton.icon(
-                  onPressed: () {
-                     Navigator.pushNamed(context, '/createInvoice');
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Create Invoice'),
-                ),
-              ],
-            ),
-            drawer: const Drawer(),
+            appBar: _buildAppBar(context), // UPDATED
+            drawer: const Drawer(), // A drawer is good practice for mobile
             body: _widgetOptions.elementAt(_selectedIndex),
             floatingActionButton: FloatingActionButton(
               onPressed: _showAddTxnBottomSheet,
@@ -67,15 +84,21 @@ class _MainScreenState extends State<MainScreen> {
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               notchMargin: 8.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  _buildMobileNavItem(icon: Icons.home, index: 0),
-                  _buildMobileNavItem(icon: Icons.bar_chart, index: 1),
-                  const SizedBox(width: 48), // Space for FAB
-                  _buildMobileNavItem(icon: Icons.inventory_2, index: 2),
-                  _buildMobileNavItem(icon: Icons.person, index: 3),
-                ],
+              // UPDATED: Added a subtle top border for definition
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1.0))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _buildMobileNavItem(icon: Icons.home, label: 'Home', index: 0),
+                    _buildMobileNavItem(icon: Icons.bar_chart, label: 'Reports', index: 1),
+                    const SizedBox(width: 48), // Space for FAB
+                    _buildMobileNavItem(icon: Icons.inventory_2, label: 'Stock', index: 2),
+                    _buildMobileNavItem(icon: Icons.person, label: 'Profile', index: 3),
+                  ],
+                ),
               ),
             ),
           );
@@ -83,28 +106,26 @@ class _MainScreenState extends State<MainScreen> {
         // --- DESKTOP/TABLET LAYOUT (>= 700 pixels wide) ---
         else {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('My Company'),
-              actions: [
-                TextButton.icon(
-                  onPressed: () {
-                     Navigator.pushNamed(context, '/createInvoice');
-                  },
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Create Invoice'),
-                ),
-              ],
-            ),
             body: Row(
               children: [
                 NavigationRail(
                   selectedIndex: _selectedIndex,
                   onDestinationSelected: _onItemTapped,
                   labelType: NavigationRailLabelType.all,
-                  leading: FloatingActionButton(
-                    elevation: 0,
-                    onPressed: _showAddTxnBottomSheet,
-                    child: const Icon(Icons.add),
+                  backgroundColor: Colors.white,
+                  indicatorColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                  leading: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                       // UPDATED: Changed FAB to a more suitable button for the rail
+                      FloatingActionButton.extended(
+                        elevation: 1,
+                        onPressed: _showAddTxnBottomSheet,
+                        icon: const Icon(Icons.add),
+                        label: const Text('New'),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
                   ),
                   destinations: const [
                     NavigationRailDestination(
@@ -131,7 +152,11 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 const VerticalDivider(thickness: 1, width: 1),
                 Expanded(
-                  child: _widgetOptions.elementAt(_selectedIndex),
+                  // NEW: Added a nested Scaffold to have an AppBar in the desktop view
+                  child: Scaffold(
+                    appBar: _buildAppBar(context),
+                    body: _widgetOptions.elementAt(_selectedIndex),
+                  ),
                 ),
               ],
             ),
@@ -141,13 +166,27 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildMobileNavItem({required IconData icon, required int index}) {
-    return IconButton(
-      icon: Icon(
-        icon,
-        color: _selectedIndex == index ? Theme.of(context).primaryColor : Colors.grey,
+  // UPDATED: Mobile nav items now include labels for better UX
+  Widget _buildMobileNavItem({required IconData icon, required String label, required int index}) {
+    final bool isSelected = _selectedIndex == index;
+    final color = isSelected ? Theme.of(context).primaryColor : Colors.grey.shade600;
+
+    return Expanded(
+      child: InkWell(
+        onTap: () => _onItemTapped(index),
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: color),
+              const SizedBox(height: 4),
+              Text(label, style: TextStyle(color: color, fontSize: 12, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
+            ],
+          ),
+        ),
       ),
-      onPressed: () => _onItemTapped(index),
     );
   }
 }

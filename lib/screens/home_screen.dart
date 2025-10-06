@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import '../models/feature_item_model.dart';
-import '../widgets/add_transaction_sheet.dart';
+// NEW: Importing widgets to use in the new design
+import '../widgets/greeting_header.dart';
+import '../widgets/balance_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,305 +16,171 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _showAllDocuments = false;
 
-  void _showAddTransactionSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return const AddTransactionSheet();
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final documents = [
-      FeatureItemModel(icon: Icons.receipt, title: 'Invoices', color: Colors.blue),
-      FeatureItemModel(icon: Icons.request_quote, title: 'Quotation', color: Colors.orange),
-      FeatureItemModel(icon: Icons.shopping_cart, title: 'Purchase', color: Colors.green),
+    // UPDATED: Restructured the data for the new layout
+    final primaryActions = [
+      FeatureItemModel(icon: Icons.receipt_long_outlined, title: 'Invoices', color: Colors.blue.shade700, route: '/saleInvoice'),
+      FeatureItemModel(icon: Icons.request_quote_outlined, title: 'Quotation', color: Colors.orange.shade700, route: '/quotationList'),
+      FeatureItemModel(icon: Icons.shopping_cart_outlined, title: 'Purchase', color: Colors.green.shade700, route: '/createPurchase'),
     ];
 
     final otherDocuments = [
-      FeatureItemModel(icon: Icons.receipt_long, title: 'e-Invoice', color: Colors.purple),
-      FeatureItemModel(icon: Icons.local_shipping, title: 'e-Way Bills', color: Colors.blue),
-      FeatureItemModel(icon: Icons.description, title: 'Proforma Invoices', color: Colors.teal),
-      FeatureItemModel(icon: Icons.payment, title: 'Payment Receipts', color: Colors.redAccent),
-      FeatureItemModel(icon: Icons.money_off, title: 'Payments Made', color: Colors.red),
-      FeatureItemModel(icon: Icons.request_page, title: 'Debit Notes', color: Colors.green),
-      FeatureItemModel(icon: Icons.credit_score, title: 'Credit Notes', color: Colors.blue),
-      FeatureItemModel(icon: Icons.badge, title: 'Digital Signature', color: Colors.green),
-      FeatureItemModel(icon: Icons.delivery_dining, title: 'Delivery Challans', color: Colors.orange),
-      FeatureItemModel(icon: Icons.inventory, title: 'Inventory', color: Colors.blueGrey),
-      FeatureItemModel(icon: Icons.book, title: 'Ledgers', color: Colors.indigo),
-      FeatureItemModel(icon: Icons.bar_chart, title: 'Reports', color: Colors.green),
-      FeatureItemModel(icon: Icons.money_off, title: 'Expenses', color: Colors.red),
-      FeatureItemModel(icon: Icons.card_giftcard, title: 'Refund Voucher', color: Colors.pink),
-      FeatureItemModel(icon: Icons.list_alt, title: 'Purchase Orders', color: Colors.teal),
-      FeatureItemModel(icon: Icons.g_mobiledata, title: 'GSTR Filing', color: Colors.blue),
+      FeatureItemModel(icon: Icons.receipt_long, title: 'e-Invoice', color: Colors.purple, route: null),
+      FeatureItemModel(icon: Icons.local_shipping, title: 'e-Way Bills', color: Colors.blue, route: null),
+      FeatureItemModel(icon: Icons.description, title: 'Proforma Invoices', color: Colors.teal, route: null),
+      FeatureItemModel(icon: Icons.payment, title: 'Payment Receipts', color: Colors.redAccent, route: null),
+      FeatureItemModel(icon: Icons.money_off, title: 'Payments Made', color: Colors.red, route: null),
+      FeatureItemModel(icon: Icons.request_page, title: 'Debit Notes', color: Colors.green, route: null),
+      FeatureItemModel(icon: Icons.credit_score, title: 'Credit Notes', color: Colors.blue, route: null),
+      FeatureItemModel(icon: Icons.badge, title: 'Digital Signature', color: Colors.green, route: null),
     ];
 
-    // MODIFICATION: Added 'Purchase stock' and 'Sold stock' to this list
     final moreOptions = [
-      FeatureItemModel(icon: Icons.card_giftcard, title: 'Festive Greetings', color: Colors.green),
-      FeatureItemModel(icon: Icons.find_in_page, title: 'HSN/SAC Finder', color: Colors.red),
-      FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue),
-      FeatureItemModel(icon: Icons.add_shopping_cart, title: 'Purchase stock', color: Colors.blueAccent),
-      FeatureItemModel(icon: Icons.sell, title: 'Sold stock', color: Colors.orange),
+      FeatureItemModel(icon: Icons.card_giftcard, title: 'Festive Greetings', color: Colors.green, route: null),
+      FeatureItemModel(icon: Icons.find_in_page, title: 'HSN/SAC Finder', color: Colors.red, route: null),
+      FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue, route: null),
+      FeatureItemModel(icon: Icons.add_shopping_cart, title: 'Purchase stock', color: Colors.blueAccent, route: null),
+      FeatureItemModel(icon: Icons.sell, title: 'Sold stock', color: Colors.orange, route: null),
     ];
 
-    const int initialItemCount = 8;
+    return Scaffold(
+      // UPDATED: Complete redesign using a ListView for a cleaner, more organized look.
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        children: [
+          // NEW: Added Greeting and Balance Card for a modern dashboard feel
+          const SizedBox(height: 16),
+          const GreetingHeader(userName: 'My Company'),
+          const SizedBox(height: 24),
+          const BalanceCard(balance: '1,50,230.50'),
+          const SizedBox(height: 32),
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final double width = constraints.maxWidth;
-        int crossAxisCount;
-        double childAspectRatio;
-
-        if (width > 1200) {
-          crossAxisCount = 8;
-          childAspectRatio = 1.0;
-        } else if (width > 600) {
-          crossAxisCount = 6;
-          childAspectRatio = 0.9;
-        } else {
-          crossAxisCount = 4;
-          childAspectRatio = 0.85;
-        }
-
-        return Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 1400),
-            child: ListView(
-              padding: const EdgeInsets.all(16.0),
-              children: [
-                Wrap(
-                  spacing: 16.0,
-                  runSpacing: 16.0,
-                  alignment: WrapAlignment.center,
-                  children: documents.map((item) => ConstrainedBox(
-                    constraints: const BoxConstraints(minWidth: 120, maxWidth: 250),
-                    child: Flex(
-                      direction: Axis.horizontal,
-                      children: [
-                        Expanded(
-                          child: Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            child: InkWell(
-                              onTap: () {
-  if (item.title == 'Invoices') {
-    Navigator.pushNamed(context, '/saleInvoice');
-  } else if (item.title == 'Quotation') {
-    Navigator.pushNamed(context, '/quotationList');
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${item.title} clicked!')),
-    );
-  }
-},
-                              borderRadius: BorderRadius.circular(12),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
-                                child: Column(
-                                  children: [
-                                    Icon(item.icon, color: item.color, size: 32),
-                                    const SizedBox(height: 12),
-                                    Text('${item.title} ->', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w500)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )).toList(),
-                ),
-                const SizedBox(height: 32),
-
-                _buildSectionHeader('Other Documents'),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: childAspectRatio,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  itemCount: _showAllDocuments ? otherDocuments.length : (otherDocuments.length > initialItemCount ? initialItemCount : otherDocuments.length),
-                  itemBuilder: (context, index) {
-                    return _buildGridItem(context, otherDocuments[index]);
-                  },
-                ),
-                const SizedBox(height: 8),
-
-                if (otherDocuments.length > initialItemCount)
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          _showAllDocuments = !_showAllDocuments;
-                        });
-                      },
-                      child: Text(
-                        _showAllDocuments ? 'View Less' : 'View More',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 24),
-
-                _buildSectionHeader('More'),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: childAspectRatio,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  itemCount: moreOptions.length,
-                  itemBuilder: (context, index) {
-                    return _buildGridItem(context, moreOptions[index]);
-                  },
-                ),
-                const SizedBox(height: 32),
-
-                _buildQuickLinksSection(context),
-              ],
-            ),
+          // NEW: Primary actions styled differently for emphasis
+          _buildSectionHeader(context, 'Quick Actions'),
+          Row(
+            children: primaryActions.map((item) => Expanded(child: _buildPrimaryActionCard(context, item))).toList(),
           ),
-        );
-      },
-    );
-  }
+          const SizedBox(height: 32),
 
-  Widget _buildQuickLinksSection(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Quick Links',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 24),
-            Wrap(
-              alignment: WrapAlignment.spaceAround,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: [
-                _buildQuickLinkItem(context, icon: Icons.add_box_outlined, label: 'Add Txn', color: Colors.red.shade400, onTap: () {
-                   _showAddTransactionSheet(context);
-                }),
-                _buildQuickLinkItem(context, icon: Icons.summarize_outlined, label: 'Sale Report', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/saleReport')),
-                _buildQuickLinkItem(context, icon: Icons.settings_outlined, label: 'Txn Settings', color: Colors.blue.shade400, onTap: () => Navigator.pushNamed(context, '/txnSettings')),
-                _buildQuickLinkItem(context, icon: Icons.arrow_forward, label: 'Show All', color: Colors.blue.shade400, onTap: () {
-                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Show All clicked!')),
-                  );
-                }),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildQuickLinkItem(BuildContext context, {required IconData icon, required String label, required Color color, required VoidCallback onTap}) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+          _buildSectionHeader(context, 'Other Documents'),
+          _buildResponsiveGrid(context, _showAllDocuments ? otherDocuments : otherDocuments.take(4).toList()),
+          
+          if (otherDocuments.length > 4) ...[
+            const SizedBox(height: 8),
+            Center(
+              child: TextButton(
+                onPressed: () => setState(() => _showAllDocuments = !_showAllDocuments),
+                child: Text(_showAllDocuments ? 'View Less' : 'View More'),
               ),
-              child: Icon(icon, color: color, size: 32),
             ),
-            const SizedBox(height: 12),
-            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
           ],
-        ),
+          const SizedBox(height: 24),
+
+          _buildSectionHeader(context, 'More'),
+          _buildResponsiveGrid(context, moreOptions),
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  // NEW: Header widget for sections
+  Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Text(
         title,
-        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+        style: Theme.of(context).textTheme.titleLarge,
       ),
     );
   }
 
-  Widget _buildGridItem(BuildContext context, FeatureItemModel item) {
-    bool isMobile = MediaQuery.of(context).size.width < 700;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+  // NEW: Special card for primary actions
+  Widget _buildPrimaryActionCard(BuildContext context, FeatureItemModel item) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 6),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${item.title} clicked!')),
-          );
+          if (item.route != null) {
+            Navigator.pushNamed(context, item.route!);
+          }
         },
-        borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CircleAvatar(
+                radius: 24,
                 backgroundColor: item.color.withOpacity(0.15),
-                radius: isMobile ? 22 : 26,
-                child: Icon(item.icon, color: item.color, size: isMobile ? 24 : 28),
+                child: Icon(item.icon, color: item.color, size: 28),
               ),
-              const SizedBox(height: 8),
-              Flexible(
-                child: Text(
-                  item.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: isMobile ? 12 : 14, fontWeight: FontWeight.w500),
-                ),
-              ),
+              const SizedBox(height: 12),
+              Text(item.title, style: Theme.of(context).textTheme.titleSmall),
             ],
           ),
         ),
       ),
     );
   }
+
+  // NEW: Grid for other items
+  Widget _buildGridItem(BuildContext context, FeatureItemModel item) {
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${item.title} clicked!')),
+          );
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(item.icon, color: item.color, size: 32),
+            const SizedBox(height: 12),
+            Text(
+              item.title,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  // NEW: Responsive grid builder
+  Widget _buildResponsiveGrid(BuildContext context, List<FeatureItemModel> items) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        childAspectRatio: 1.0,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+      ),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        return _buildGridItem(context, items[index]);
+      },
+    );
+  }
+}
+
+// NEW: Added route property to your model
+class FeatureItemModel {
+  final IconData icon;
+  final String title;
+  final Color color;
+  final String? route; // Can be null
+
+  FeatureItemModel({
+    required this.icon,
+    required this.title,
+    required this.color,
+    this.route,
+  });
 }
