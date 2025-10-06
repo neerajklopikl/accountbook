@@ -282,5 +282,60 @@ class _FilterOptionsSheet extends StatefulWidget {
 }
 
 class _FilterOptionsSheetState extends State<_FilterOptionsSheet> {
-  // ... state and build method remain the same
+  String _sortBy = 'Date';
+  String _filterBy = 'All';
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Sort by', style: TextStyle(fontWeight: FontWeight.bold)),
+          RadioListTile<String>(
+            title: const Text('Date'),
+            value: 'Date',
+            groupValue: _sortBy,
+            onChanged: (value) => setState(() => _sortBy = value!),
+          ),
+          RadioListTile<String>(
+            title: const Text('Amount'),
+            value: 'Amount',
+            groupValue: _sortBy,
+            onChanged: (value) => setState(() => _sortBy = value!),
+          ),
+          const Divider(),
+          const Text('Filter by', style: TextStyle(fontWeight: FontWeight.bold)),
+          RadioListTile<String>(
+            title: const Text('All'),
+            value: 'All',
+            groupValue: _filterBy,
+            onChanged: (value) => setState(() => _filterBy = value!),
+          ),
+          RadioListTile<String>(
+            title: const Text('Paid'),
+            value: 'Paid',
+            groupValue: _filterBy,
+            onChanged: (value) => setState(() => _filterBy = value!),
+          ),
+          RadioListTile<String>(
+            title: const Text('Unpaid'),
+            value: 'Unpaid',
+            groupValue: _filterBy,
+            onChanged: (value) => setState(() => _filterBy = value!),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Apply'),
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, 50),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }

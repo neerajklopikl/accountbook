@@ -86,14 +86,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             child: InkWell(
                               onTap: () {
-                                if (item.title == 'Invoices') {
-                                  Navigator.pushNamed(context, '/saleInvoice');
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('${item.title} clicked!')),
-                                  );
-                                }
-                              },
+  if (item.title == 'Invoices') {
+    Navigator.pushNamed(context, '/saleInvoice');
+  } else if (item.title == 'Quotation') {
+    Navigator.pushNamed(context, '/quotationList');
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('${item.title} clicked!')),
+    );
+  }
+},
                               borderRadius: BorderRadius.circular(12),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 8.0),
