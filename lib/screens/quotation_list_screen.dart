@@ -29,9 +29,7 @@ class _QuotationListScreenState extends State<QuotationListScreen> {
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.filter_list),
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Filter button clicked!')),
-                    );
+                    Navigator.pushNamed(context, '/quotationFilters');
                   },
                 ),
                 border: OutlineInputBorder(

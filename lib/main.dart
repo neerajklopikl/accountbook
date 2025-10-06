@@ -34,7 +34,8 @@ import 'screens/settings_screen.dart';
 import 'screens/stock_dashboard_screen.dart';
 import 'screens/stock_summary_screen.dart';
 import 'screens/e_invoice_login_screen.dart'; 
-import 'screens/quotation_list_screen.dart'; // Import the new screen
+import 'screens/quotation_list_screen.dart';
+import 'screens/quotation_filters_screen.dart'; // Import the new screen
 
 void main() {
   runApp(const MyApp());
@@ -62,7 +63,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainScreen(),
-        '/quotationList': (context) => const QuotationListScreen(), // Add the new route
+        '/quotationList': (context) => const QuotationListScreen(),
+        '/quotationFilters': (context) => const QuotationFiltersScreen(),
         '/addSale': (context) => const AddSaleScreen(),
         '/addPurchase': (context) => const AddPurchaseScreen(),
         '/addItem': (context) => const AddItemScreen(),
