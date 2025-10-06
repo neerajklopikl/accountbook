@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class P2PTransferScreen extends StatelessWidget {
-  const P2PTransferScreen({super.key});
+class AddPartyScreen extends StatelessWidget {
+  const AddPartyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('P2P Transfer'),
+        title: const Text('Add Party'),
       ),
       body: const Center(
-        child: Text('P2P Transfer Screen'),
+        child: Text('Add Party Screen'),
       ),
     );
   }

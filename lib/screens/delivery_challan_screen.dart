@@ -9,6 +9,7 @@ class DeliveryChallanScreen extends StatefulWidget {
 
 class _DeliveryChallanScreenState extends State<DeliveryChallanScreen> {
   DateTime selectedDate = DateTime.now();
+  String challanNo = '1';
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -16,6 +17,23 @@ class _DeliveryChallanScreenState extends State<DeliveryChallanScreen> {
       initialDate: selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+       builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.blue, // header background color
+              onPrimary: Colors.white, // header text color
+              onSurface: Colors.black, // body text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.blue, // button text color
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      }
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -29,7 +47,13 @@ class _DeliveryChallanScreenState extends State<DeliveryChallanScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Change Challan No.'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Change Challan No.'),
+              IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context))
+            ],
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,28 +61,29 @@ class _DeliveryChallanScreenState extends State<DeliveryChallanScreen> {
               const Text('Invoice Prefix'),
               Row(
                 children: [
-                  ChoiceChip(label: const Text('None'), selected: true, onSelected: (val){}),
+                  ChoiceChip(label: const Text('None'), selected: true, onSelected: (val){}, backgroundColor: Colors.red[100], selectedColor: Colors.red, labelStyle: TextStyle(color: Colors.white)),
                   const SizedBox(width: 8),
                   ChoiceChip(label: const Text('Add Prefix'), selected: false, onSelected: (val){}),
                 ],
               ),
               TextFormField(
-                initialValue: '1',
+                initialValue: challanNo,
                 decoration: const InputDecoration(
                   labelText: 'Challan No.',
                   border: OutlineInputBorder(),
                 ),
+                onChanged: (value) => challanNo = value,
               ),
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('CANCEL'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('SAVE'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                child: const Text('SAVE', style: TextStyle(color: Colors.white)),
+              ),
             ),
           ],
         );
@@ -87,9 +112,9 @@ class _DeliveryChallanScreenState extends State<DeliveryChallanScreen> {
                     onTap: _showChangeChallanNoDialog,
                     child: InputDecorator(
                       decoration: const InputDecoration(labelText: 'Challan No.'),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text('1'), Icon(Icons.arrow_drop_down)],
+                        children: [Text(challanNo), const Icon(Icons.arrow_drop_down)],
                       ),
                     ),
                   ),

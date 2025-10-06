@@ -99,14 +99,11 @@ class _VoucherDetailsDialogState extends State<VoucherDetailsDialog> {
                 ),
               ),
               const SizedBox(width: 10),
-              Expanded(
+              const Expanded(
                 child: TextField(
                   decoration: InputDecoration(
                     labelText: 'Due Date',
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () {},
-                    ),
+                    suffixIcon: Icon(Icons.calendar_today),
                   ),
                 ),
               ),

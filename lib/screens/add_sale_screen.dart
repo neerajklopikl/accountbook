@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../widgets/voucher_details_dialog.dart';
+import 'add_buyer_screen.dart';
+import '../widgets/signature_stamp.dart';
 
 class AddSaleScreen extends StatefulWidget {
   const AddSaleScreen({super.key});
@@ -140,7 +142,13 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                       ),
                       const SizedBox(height: 16),
                       OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AddBuyerScreen()),
+                          );
+                        },
                         icon: const Icon(Icons.add),
                         label: const Text('Select Buyer'),
                         style: OutlinedButton.styleFrom(
@@ -216,6 +224,8 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                   _buildTermsAndConditions(),
                 ],
               ),
+              const SizedBox(height: 16),
+              const SignatureAndStamp(),
             ],
           ),
         ),
