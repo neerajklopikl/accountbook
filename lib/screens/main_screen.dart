@@ -33,13 +33,11 @@ class _MainScreenState extends State<MainScreen> {
   void _showAddTxnBottomSheet() {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // UPDATED: Allow sheet to be taller
-      backgroundColor: Colors.transparent, // UPDATED: For rounded corners
+      isScrollControlled: true, 
       builder: (context) => const AddTxnBottomSheet(),
     );
   }
 
-  // UPDATED: Extracted AppBar into a separate method for clarity
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text('My Company'),
@@ -72,8 +70,8 @@ class _MainScreenState extends State<MainScreen> {
         // --- MOBILE LAYOUT (< 700 pixels wide) ---
         if (constraints.maxWidth < 700) {
           return Scaffold(
-            appBar: _buildAppBar(context), // UPDATED
-            drawer: const Drawer(), // A drawer is good practice for mobile
+            appBar: _buildAppBar(context), 
+            drawer: const Drawer(), 
             body: _widgetOptions.elementAt(_selectedIndex),
             floatingActionButton: FloatingActionButton(
               onPressed: _showAddTxnBottomSheet,
@@ -84,7 +82,6 @@ class _MainScreenState extends State<MainScreen> {
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               notchMargin: 8.0,
-              // UPDATED: Added a subtle top border for definition
               child: Container(
                 decoration: BoxDecoration(
                   border: Border(top: BorderSide(color: Colors.grey.shade200, width: 1.0))
@@ -117,7 +114,6 @@ class _MainScreenState extends State<MainScreen> {
                   leading: Column(
                     children: [
                       const SizedBox(height: 20),
-                       // UPDATED: Changed FAB to a more suitable button for the rail
                       FloatingActionButton.extended(
                         elevation: 1,
                         onPressed: _showAddTxnBottomSheet,
@@ -152,7 +148,6 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 const VerticalDivider(thickness: 1, width: 1),
                 Expanded(
-                  // NEW: Added a nested Scaffold to have an AppBar in the desktop view
                   child: Scaffold(
                     appBar: _buildAppBar(context),
                     body: _widgetOptions.elementAt(_selectedIndex),
@@ -166,7 +161,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  // UPDATED: Mobile nav items now include labels for better UX
+  // FIX: Reduced vertical padding and spacing to prevent overflow on mobile.
   Widget _buildMobileNavItem({required IconData icon, required String label, required int index}) {
     final bool isSelected = _selectedIndex == index;
     final color = isSelected ? Theme.of(context).primaryColor : Colors.grey.shade600;
@@ -176,12 +171,12 @@ class _MainScreenState extends State<MainScreen> {
         onTap: () => _onItemTapped(index),
         borderRadius: BorderRadius.circular(20),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 6.0), // Reduced from 8.0
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, color: color),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2), // Reduced from 4
               Text(label, style: TextStyle(color: color, fontSize: 12, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
             ],
           ),

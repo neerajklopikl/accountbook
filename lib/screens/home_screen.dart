@@ -34,6 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(icon: Icons.request_page, title: 'Debit Notes', color: Colors.green, route: null),
       FeatureItemModel(icon: Icons.credit_score, title: 'Credit Notes', color: Colors.blue, route: null),
       FeatureItemModel(icon: Icons.badge, title: 'Digital Signature', color: Colors.green, route: null),
+      FeatureItemModel(icon: Icons.account_balance, title: 'Bank Statements', color: Colors.indigo, route: null),
+      FeatureItemModel(icon: Icons.request_quote, title: 'Expense Vouchers', color: Colors.deepOrange, route: null),
+      FeatureItemModel(icon: Icons.book, title: 'Journal Vouchers', color: Colors.brown, route: null),
+      FeatureItemModel(icon: Icons.inventory, title: 'Stock Journals', color: Colors.blueGrey, route: null),
+      FeatureItemModel(icon: Icons.receipt, title: 'Goods Receipt Note', color: Colors.cyan, route: null),
     ];
 
     final moreOptions = [
@@ -42,6 +47,10 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue, route: null),
       FeatureItemModel(icon: Icons.add_shopping_cart, title: 'Purchase stock', color: Colors.blueAccent, route: null),
       FeatureItemModel(icon: Icons.sell, title: 'Sold stock', color: Colors.orange, route: null),
+      FeatureItemModel(icon: Icons.upload_file, title: 'GST Filing', color: Colors.deepPurple, route: null),
+      FeatureItemModel(icon: Icons.attach_money, title: 'TDS/TCS', color: Colors.teal, route: null),
+      FeatureItemModel(icon: Icons.sync_alt, title: 'Bank Reconciliation', color: Colors.lightBlue, route: null),
+      FeatureItemModel(icon: Icons.pie_chart, title: 'Budgeting', color: Colors.pink, route: null),
     ];
 
     return Scaffold(
@@ -151,13 +160,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
   
-  // NEW: Responsive grid builder
+  // FIX: Updated grid to be more responsive to different screen sizes.
   Widget _buildResponsiveGrid(BuildContext context, List<FeatureItemModel> items) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 100, // Each item will have a maximum width of 100
         childAspectRatio: 1.0,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
