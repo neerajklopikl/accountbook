@@ -54,10 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(icon: Icons.g_mobiledata, title: 'GSTR Filing', color: Colors.blue),
     ];
 
+    // MODIFICATION: Added 'Purchase stock' and 'Sold stock' to this list
     final moreOptions = [
       FeatureItemModel(icon: Icons.card_giftcard, title: 'Festive Greetings', color: Colors.green),
       FeatureItemModel(icon: Icons.find_in_page, title: 'HSN/SAC Finder', color: Colors.red),
       FeatureItemModel(icon: Icons.qr_code_scanner, title: 'E-Invoice QR Scanner', color: Colors.blue),
+      FeatureItemModel(icon: Icons.add_shopping_cart, title: 'Purchase stock', color: Colors.blueAccent),
+      FeatureItemModel(icon: Icons.sell, title: 'Sold stock', color: Colors.orange),
     ];
 
     const int initialItemCount = 8;
