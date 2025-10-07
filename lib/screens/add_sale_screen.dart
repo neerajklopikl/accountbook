@@ -59,7 +59,7 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
-                // Navigate to settings or show a dialog
+                Navigator.pushNamed(context, '/invoiceSettings');
               },
             ),
           ],

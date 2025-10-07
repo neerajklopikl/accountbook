@@ -13,6 +13,7 @@ import 'package:accountbook/screens/gstr1_report_screen.dart';
 import 'package:accountbook/screens/gstr2_report_screen.dart';
 import 'package:accountbook/screens/gstr3b_report_screen.dart';
 import 'package:accountbook/screens/gst_transaction_report_screen.dart';
+import 'package:accountbook/screens/invoice_settings_screen.dart';
 import 'package:accountbook/screens/payment_receipt_list_screen.dart';
 import 'package:accountbook/screens/payments_made_list_screen.dart';
 import 'package:accountbook/screens/setup_digital_signature_screen.dart';
@@ -159,6 +160,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // Add new routes
+        '/invoiceSettings': (context) => const InvoiceSettingsScreen(),
         '/gstr1Report': (context) => const GSTR1ReportScreen(),
         '/gstr2Report': (context) => const GSTR2ReportScreen(),
         '/gstr3bReport': (context) => const GSTR3BReportScreen(),
@@ -229,4 +231,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

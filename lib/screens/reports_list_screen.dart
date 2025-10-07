@@ -45,7 +45,7 @@ class ReportsListScreen extends StatelessWidget {
             'GSTR-2': '/gstr2Report',
             'GSTR-3B': '/gstr3bReport',
             'GST Transaction report': '/gstTransactionReport',
-            'GSTR-9': '/gstReports',
+            'GSTR-9': '/gstr9Report',
             'Sale Summary by HSN': '/gstReports',
             'SAC Report': '/gstReports',
           },
@@ -165,4 +165,3 @@ class ReportsListScreen extends StatelessWidget {
     );
   }
 }
-

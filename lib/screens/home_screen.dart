@@ -192,6 +192,11 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.brown,
           route: '/deliveryChallan'),
       FeatureItemModel(icon: Icons.pie_chart, title: 'Budgeting', color: Colors.pink),
+      FeatureItemModel(
+          icon: Icons.list_alt,
+          title: 'All Tx Report',
+          color: Colors.grey,
+          route: '/allTxReport'),
     ];
 
     return Scaffold(
