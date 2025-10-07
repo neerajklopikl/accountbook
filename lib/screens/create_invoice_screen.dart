@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'package:accountbook/widgets/add_custom_field_dialog.dart';
+import 'package:accountbook/widgets/bank_details_form.dart';
+import 'package:accountbook/widgets/other_details_form.dart';
+import 'package:accountbook/widgets/transport_details_form.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // FIX: Added http import
 
@@ -106,23 +110,23 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
             _buildOptionalDetailItem(
               icon: Icons.local_shipping,
               title: 'Transport Details',
-              onTap: () => _addTransportDetails(),
+              onTap: () => _showFormDialog(context, 'Transport Details', const TransportDetailsForm()),
             ),
             _buildOptionalDetailItem(
               icon: Icons.article_outlined,
               title: 'Additional Fields',
               isCustom: true,
-              onTap: () => _addAdditionalFields(),
+              onTap: () => showDialog(context: context, builder: (_) => const AddCustomFieldDialog()),
             ),
             _buildOptionalDetailItem(
               icon: Icons.receipt_long,
               title: 'Other Details',
-              onTap: () => _addOtherDetails(),
+              onTap: () => _showFormDialog(context, 'Other Details', const OtherDetailsForm()),
             ),
             _buildOptionalDetailItem(
               icon: Icons.account_balance,
               title: 'Bank Details',
-              onTap: () => _addBankDetails(),
+              onTap: () => _showFormDialog(context, 'Bank Details', const BankDetailsForm()),
             ),
             _buildTermsAndConditions(),
           ],
@@ -132,9 +136,33 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
     );
   }
 
+  void _showFormDialog(BuildContext context, String title, Widget form) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: form,
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement save logic for each form
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Save'),
+              )
+            ],
+          );
+        });
+  }
+
   // Methods to add/edit details (showing dialogs as examples)
   void _addTransportDetails() {
-     // TODO: Replace with navigation to a dedicated screen
+    // TODO: Replace with navigation to a dedicated screen
     setState(() => _transportDetails = TransportDetails(vehicleNo: 'AB-123'));
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transport Details Added')));
   }
@@ -174,7 +202,7 @@ class _CreateInvoiceScreenState extends State<CreateInvoiceScreen> {
             onPressed: onTap,
             icon: const Icon(Icons.add, size: 18),
             label: Text(isCustom ? 'Add Fields' : 'Add'),
-             style: OutlinedButton.styleFrom(
+            style: OutlinedButton.styleFrom(
               side: BorderSide(color: Colors.grey.shade400),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),

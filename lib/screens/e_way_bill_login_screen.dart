@@ -1,9 +1,7 @@
-// lib/screens/e_invoice_login_screen.dart
-
 import 'package:flutter/material.dart';
 
-class EInvoiceLoginScreen extends StatelessWidget {
-  const EInvoiceLoginScreen({super.key});
+class EWayBillLoginScreen extends StatelessWidget {
+  const EWayBillLoginScreen({super.key});
 
   void _showHelpOptions(BuildContext context) {
     showModalBottomSheet(
@@ -41,7 +39,7 @@ class EInvoiceLoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('E-Invoice Login'),
+        title: const Text('E-Way Bill Login'),
         backgroundColor: Colors.amber,
         foregroundColor: Colors.black,
       ),
@@ -52,17 +50,17 @@ class EInvoiceLoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Text(
-                'Turnover above Rs.5Cr?',
+                'Create E-Waybill in just one click',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                'Start E-Invoicing to avoid the penalties. Login with your eWay bill credentials to start using E-Invoices with AccountBook',
+                'Login with your eWay bill credentials to start using E-Waybill with AccountBook',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(color: Colors.grey[700], fontSize: 16),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
@@ -72,7 +70,7 @@ class EInvoiceLoginScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       const Text(
-                        'E-Invoice System Login',
+                        'E-way Bill System Login',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -129,14 +127,14 @@ class EInvoiceLoginScreen extends StatelessWidget {
               const SizedBox(height: 32),
               _buildInfoSection(
                 context,
-                'Why E-Invoicing with AccountBook?',
+                'Why Create E-Waybill with AccountBook?',
                 [
-                  _buildFeatureItem(Icons.bolt, 'Create E-Invoice in 1 sec'),
-                  _buildFeatureItem(
-                      Icons.all_inclusive, 'Unlimited E-Invoice Credits'),
-                  _buildFeatureItem(Icons.edit, 'Easy Edit'),
+                  _buildFeatureItem(Icons.local_shipping, 'Create E-Waybill Instantly'),
                   _buildFeatureItem(
                       Icons.sync, 'Easy Connect with E-Invoice & E-Way Bill'),
+                   _buildFeatureItem(Icons.check_circle_outline, 'Smart Error Validations'),
+                   _buildFeatureItem(Icons.edit_note, 'Easily Update Part B'),
+                   _buildFeatureItem(Icons.event_available, 'Easily Extend Validity'),
                 ],
               ),
             ],

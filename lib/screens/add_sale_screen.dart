@@ -1,3 +1,7 @@
+import 'package:accountbook/widgets/add_custom_field_dialog.dart';
+import 'package:accountbook/widgets/bank_details_form.dart';
+import 'package:accountbook/widgets/other_details_form.dart';
+import 'package:accountbook/widgets/transport_details_form.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../widgets/voucher_details_dialog.dart';
@@ -207,19 +211,23 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                   _buildOptionalDetailItem(
                     icon: Icons.local_shipping,
                     title: 'Transport Details',
+                     onTap: () => _showFormDialog(context, 'Transport Details', const TransportDetailsForm()),
                   ),
                   _buildOptionalDetailItem(
                     icon: Icons.post_add,
                     title: 'Additional Fields',
                     isCustom: true,
+                     onTap: () => showDialog(context: context, builder: (_) => const AddCustomFieldDialog()),
                   ),
                   _buildOptionalDetailItem(
                     icon: Icons.article,
                     title: 'Other Details',
+                     onTap: () => _showFormDialog(context, 'Other Details', const OtherDetailsForm()),
                   ),
                   _buildOptionalDetailItem(
                     icon: Icons.account_balance,
                     title: 'Bank Details',
+                     onTap: () => _showFormDialog(context, 'Bank Details', const BankDetailsForm()),
                   ),
                   _buildTermsAndConditions(),
                 ],
@@ -234,10 +242,35 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
     );
   }
 
+  void _showFormDialog(BuildContext context, String title, Widget form) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: form,
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // TODO: Implement save logic for each form
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Save'),
+              )
+            ],
+          );
+        });
+  }
+
   Widget _buildOptionalDetailItem({
     required IconData icon,
     required String title,
     bool isCustom = false,
+    required VoidCallback onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
@@ -247,7 +280,7 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
           const SizedBox(width: 16),
           Expanded(child: Text(title, style: const TextStyle(fontSize: 16))),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: onTap,
             icon: const Icon(Icons.add),
             label: Text(isCustom ? 'Add Fields' : 'Add'),
             style: ElevatedButton.styleFrom(

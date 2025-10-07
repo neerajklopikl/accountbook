@@ -1,6 +1,7 @@
 // lib/main.dart
 
 import 'package:accountbook/screens/add_bank_account_screen.dart';
+import 'package:accountbook/screens/e_way_bill_login_screen.dart';
 import 'package:flutter/material.dart';
 // Import Firebase
 // import 'package:firebase_core/firebase_core.dart';
@@ -149,6 +150,7 @@ class MyApp extends StatelessWidget {
         '/otherDetails': (context) => const OtherDetailsScreen(),
         '/bankDetails': (context) => const BankDetailsScreen(),
         '/addBankAccount': (context) => const AddBankAccountScreen(),
+        '/eWayBillLogin': (context) => const EWayBillLoginScreen(),
 
 
         // Existing routes
