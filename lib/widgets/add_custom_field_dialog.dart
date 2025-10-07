@@ -1,3 +1,5 @@
+// lib/widgets/add_custom_field_dialog.dart
+
 import 'package:flutter/material.dart';
 
 class AddCustomFieldDialog extends StatelessWidget {
@@ -16,10 +18,18 @@ class AddCustomFieldDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
+           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
-              labelText: 'Field Value',
+              labelText: 'Entry Type',
             ),
+            value: 'Text',
+            items: ['Text', 'Number', 'Checkbox', 'Email', 'URL', 'Phone', 'Amount', 'Percent' ]
+                .map((option) => DropdownMenuItem(
+                      value: option,
+                      child: Text(option),
+                    ))
+                .toList(),
+            onChanged: (value) {},
           ),
         ],
       ),
@@ -31,6 +41,7 @@ class AddCustomFieldDialog extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.amber,
             foregroundColor: Colors.black,
+            minimumSize: const Size(double.infinity, 40)
           ),
           child: const Text('Save'),
         ),
