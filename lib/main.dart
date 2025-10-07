@@ -10,6 +10,9 @@ import 'package:accountbook/screens/credit_note_list_screen.dart';
 import 'package:accountbook/screens/debit_note_list_screen.dart';
 import 'package:accountbook/screens/e_way_bill_login_screen.dart';
 import 'package:accountbook/screens/gstr1_report_screen.dart';
+import 'package:accountbook/screens/gstr2_report_screen.dart';
+import 'package:accountbook/screens/gstr3b_report_screen.dart';
+import 'package:accountbook/screens/gst_transaction_report_screen.dart';
 import 'package:accountbook/screens/payment_receipt_list_screen.dart';
 import 'package:accountbook/screens/payments_made_list_screen.dart';
 import 'package:accountbook/screens/setup_digital_signature_screen.dart';
@@ -157,6 +160,9 @@ class MyApp extends StatelessWidget {
       routes: {
         // Add new routes
         '/gstr1Report': (context) => const GSTR1ReportScreen(),
+        '/gstr2Report': (context) => const GSTR2ReportScreen(),
+        '/gstr3bReport': (context) => const GSTR3BReportScreen(),
+        '/gstTransactionReport': (context) => const GstTransactionReportScreen(),
         '/partyList': (context) => const PartyListScreen(),
         '/addParty': (context) => const AddPartyScreen(),
         '/productList': (context) => const ProductListScreen(),
@@ -223,3 +229,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

@@ -41,10 +41,10 @@ class ReportsListScreen extends StatelessWidget {
           context,
           title: 'GST reports',
           reports: {
-            'GSTR-1': '/gstr1Report', // MODIFIED: Route to GSTR-1 screen
-            'GSTR-2': '/gstReports',
-            'GSTR-3B': '/gstReports',
-            'GST Transaction report': '/gstReports',
+            'GSTR-1': '/gstr1Report',
+            'GSTR-2': '/gstr2Report',
+            'GSTR-3B': '/gstr3bReport',
+            'GST Transaction report': '/gstTransactionReport',
             'GSTR-9': '/gstReports',
             'Sale Summary by HSN': '/gstReports',
             'SAC Report': '/gstReports',
@@ -165,3 +165,4 @@ class ReportsListScreen extends StatelessWidget {
     );
   }
 }
+
