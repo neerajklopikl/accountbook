@@ -65,8 +65,9 @@ class _CreatePaymentMadeScreenState extends State<CreatePaymentMadeScreen> {
                   children: [
                     const TextField(decoration: InputDecoration(labelText: 'Seller Name')),
                     const SizedBox(height: 16),
-                    const TextField(
-                      decoration: InputDecoration(
+                    // FIX: Removed 'const' from the TextField and TextEditingController
+                    TextField(
+                      decoration: const InputDecoration(
                         labelText: 'Total Amount',
                         prefixText: '₹ ',
                       ),
