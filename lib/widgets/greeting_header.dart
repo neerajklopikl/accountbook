@@ -8,7 +8,7 @@ class GreetingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // UPDATED: Cleaner, more modern look
+    // UPDATED: Cleaner, more modern look and added navigation
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -22,10 +22,15 @@ class GreetingHeader extends StatelessWidget {
             ),
           ],
         ),
-        const CircleAvatar(
-          radius: 25,
-          backgroundColor: Color(0xFFE3F2FD),
-          child: Icon(Icons.person, color: Color(0xFF1E88E5)),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/businessProfile');
+          },
+          child: const CircleAvatar(
+            radius: 25,
+            backgroundColor: Color(0xFFE3F2FD),
+            child: Icon(Icons.person, color: Color(0xFF1E88E5)),
+          ),
         )
       ],
     );

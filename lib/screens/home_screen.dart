@@ -126,14 +126,18 @@ class _HomeScreenState extends State<HomeScreen> {
           title: 'Debit Notes',
           color: Colors.green,
           route: '/debitNoteList'), // FIX: Added route for navigation
+      // MODIFIED: Navigates to the new Credit Note list screen
       FeatureItemModel(
           icon: Icons.credit_score,
           title: 'Credit Notes',
-          color: Colors.blue),
+          color: Colors.blue,
+          route: '/creditNoteList'),
+      // MODIFIED: Navigates to the new Digital Signature setup screen
       FeatureItemModel(
           icon: Icons.badge,
           title: 'Digital Signature',
-          color: Colors.green),
+          color: Colors.green,
+          route: '/setupDigitalSignature'),
       FeatureItemModel(
           icon: Icons.account_balance,
           title: 'Bank Statements',
@@ -181,6 +185,12 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icons.sync_alt,
           title: 'Bank Reconciliation',
           color: Colors.lightBlue),
+      // NEW: Added Delivery Challan next to Budgeting
+      FeatureItemModel(
+          icon: Icons.local_shipping,
+          title: 'Delivery Challan',
+          color: Colors.brown,
+          route: '/deliveryChallan'),
       FeatureItemModel(icon: Icons.pie_chart, title: 'Budgeting', color: Colors.pink),
     ];
 
@@ -339,4 +349,3 @@ class FeatureItemModel {
     this.onTap,
   });
 }
-

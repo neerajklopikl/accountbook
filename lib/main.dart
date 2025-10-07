@@ -2,13 +2,16 @@
 
 // FIX: Corrected all import paths to be absolute and consistent.
 import 'package:accountbook/screens/add_bank_account_screen.dart';
+import 'package:accountbook/screens/create_credit_note_screen.dart';
 import 'package:accountbook/screens/create_debit_note_screen.dart';
 import 'package:accountbook/screens/create_payment_made_screen.dart';
 import 'package:accountbook/screens/create_payment_receipt_screen.dart';
+import 'package:accountbook/screens/credit_note_list_screen.dart';
 import 'package:accountbook/screens/debit_note_list_screen.dart';
 import 'package:accountbook/screens/e_way_bill_login_screen.dart';
 import 'package:accountbook/screens/payment_receipt_list_screen.dart';
 import 'package:accountbook/screens/payments_made_list_screen.dart';
+import 'package:accountbook/screens/setup_digital_signature_screen.dart';
 import 'package:flutter/material.dart';
 // Import Firebase
 // import 'package:firebase_core/firebase_core.dart';
@@ -63,6 +66,9 @@ import 'package:accountbook/screens/transport_details_screen.dart';
 import 'package:accountbook/screens/other_details_screen.dart';
 import 'package:accountbook/screens/bank_details_screen.dart';
 
+// NEW: Import the business profile screen
+import 'package:accountbook/screens/business_profile_screen.dart';
+
 
 void main() async {
   // Ensure Flutter is initialized
@@ -107,8 +113,7 @@ class MyApp extends StatelessWidget {
             color: Color(0xFF212529),
           ),
         ),
-        // FIX: Changed CardTheme to CardThemeData
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 0,
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -148,65 +153,70 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialRoute: '/',
-      // FIX: Removed 'const' from all screen constructors that are not constant.
       routes: {
         // Add new routes
-        '/partyList': (context) => PartyListScreen(),
-        '/addParty': (context) => AddPartyScreen(),
-        '/productList': (context) => ProductListScreen(),
-        '/transportDetails': (context) => TransportDetailsScreen(),
-        '/otherDetails': (context) => OtherDetailsScreen(),
-        '/bankDetails': (context) => BankDetailsScreen(),
-        '/addBankAccount': (context) => AddBankAccountScreen(),
-        '/eWayBillLogin': (context) => EWayBillLoginScreen(),
-        '/paymentReceiptList': (context) => PaymentReceiptListScreen(),
-        '/createPaymentReceipt': (context) => CreatePaymentReceiptScreen(),
-        '/paymentsMadeList': (context) => PaymentsMadeListScreen(),
-        '/createPaymentMade': (context) => CreatePaymentMadeScreen(),
-        '/debitNoteList': (context) => DebitNoteListScreen(),
-        '/createDebitNote': (context) => CreateDebitNoteScreen(),
+        '/partyList': (context) => const PartyListScreen(),
+        '/addParty': (context) => const AddPartyScreen(),
+        '/productList': (context) => const ProductListScreen(),
+        '/transportDetails': (context) => const TransportDetailsScreen(),
+        '/otherDetails': (context) => const OtherDetailsScreen(),
+        '/bankDetails': (context) => const BankDetailsScreen(),
+        '/addBankAccount': (context) => const AddBankAccountScreen(),
+        '/eWayBillLogin': (context) => const EWayBillLoginScreen(),
+        '/paymentReceiptList': (context) => const PaymentReceiptListScreen(),
+        '/createPaymentReceipt': (context) => const CreatePaymentReceiptScreen(),
+        '/paymentsMadeList': (context) => const PaymentsMadeListScreen(),
+        '/createPaymentMade': (context) => const CreatePaymentMadeScreen(),
+        '/debitNoteList': (context) => const DebitNoteListScreen(),
+        '/createDebitNote': (context) => const CreateDebitNoteScreen(),
+        '/creditNoteList': (context) => const CreditNoteListScreen(),
+        '/createCreditNote': (context) => const CreateCreditNoteScreen(),
+        '/setupDigitalSignature': (context) => const SetupDigitalSignatureScreen(),
+
+        // NEW: Route for the business profile screen
+        '/businessProfile': (context) => const BusinessProfileScreen(),
 
 
         // Existing routes
-        '/': (context) => MainScreen(),
-        '/createInvoice': (context) => CreateInvoiceScreen(),
-        '/createPurchase': (context) => CreatePurchaseScreen(),
-        '/uploadBill': (context) => UploadBillScreen(),
-        '/quotationList': (context) => QuotationListScreen(),
-        '/quotationFilters': (context) => QuotationFiltersScreen(),
-        '/addSale': (context) => AddSaleScreen(),
-        '/addPurchase': (context) => AddPurchaseScreen(),
-        '/addItem': (context) => AddItemScreen(),
-        '/itemSettings': (context) => ItemSettingsScreen(),
-        '/saleReport': (context) => SaleReportScreen(),
-        '/purchaseReport': (context) => PurchaseReportScreen(),
-        '/dayBook': (context) => DayBookScreen(),
-        '/allTransactions': (context) => AllTransactionsScreen(),
-        '/billWiseProfit': (context) => BillWiseProfitScreen(),
-        '/profitLoss': (context) => ProfitLossScreen(),
-        '/cashflow': (context) => CashflowScreen(),
-        '/balanceSheet': (context) => BalanceSheetScreen(),
-        '/trialBalance': (context) => TrialBalanceScreen(),
-        '/partyReports': (context) => PartyReportsScreen(),
-        '/gstReports': (context) => GstReportsScreen(),
-        '/stockReports': (context) => StockReportsScreen(),
-        '/settings': (context) => SettingsScreen(),
-        '/stockDashboard': (context) => StockDashboardScreen(),
-        '/stockSummary': (context) => StockSummaryScreen(),
-        '/txnSettings': (context) => TransactionSettingsScreen(),
-        '/paymentIn': (context) => PaymentInScreen(),
-        '/saleReturn': (context) => SaleReturnScreen(),
-        '/deliveryChallan': (context) => DeliveryChallanScreen(),
-        '/estimateQuote': (context) => EstimateQuoteScreen(),
-        '/saleOrder': (context) => SaleOrderScreen(),
-        '/saleInvoice': (context) => SaleInvoiceScreen(),
-        '/paymentOut': (context) => PaymentOutScreen(),
-        '/purchaseReturn': (context) => PurchaseReturnScreen(),
-        '/purchaseOrder': (context) => PurchaseOrderScreen(),
-        '/expense': (context) => ExpenseScreen(),
-        '/otherIncome': (context) => OtherIncomeScreen(),
-        '/eInvoiceLogin': (context) => EInvoiceLoginScreen(),
-        '/p2pTransfer': (context) => P2PTransferScreen(),
+        '/': (context) => const MainScreen(),
+        '/createInvoice': (context) => const CreateInvoiceScreen(),
+        '/createPurchase': (context) => const CreatePurchaseScreen(),
+        '/uploadBill': (context) => const UploadBillScreen(),
+        '/quotationList': (context) => const QuotationListScreen(),
+        '/quotationFilters': (context) => const QuotationFiltersScreen(),
+        '/addSale': (context) => const AddSaleScreen(),
+        '/addPurchase': (context) => const AddPurchaseScreen(),
+        '/addItem': (context) => const AddItemScreen(),
+        '/itemSettings': (context) => const ItemSettingsScreen(),
+        '/saleReport': (context) => const SaleReportScreen(),
+        '/purchaseReport': (context) => const PurchaseReportScreen(),
+        '/dayBook': (context) => const DayBookScreen(),
+        '/allTransactions': (context) => const AllTransactionsScreen(),
+        '/billWiseProfit': (context) => const BillWiseProfitScreen(),
+        '/profitLoss': (context) => const ProfitLossScreen(),
+        '/cashflow': (context) => const CashflowScreen(),
+        '/balanceSheet': (context) => const BalanceSheetScreen(),
+        '/trialBalance': (context) => const TrialBalanceScreen(),
+        '/partyReports': (context) => const PartyReportsScreen(),
+        '/gstReports': (context) => const GstReportsScreen(),
+        '/stockReports': (context) => const StockReportsScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/stockDashboard': (context) => const StockDashboardScreen(),
+        '/stockSummary': (context) => const StockSummaryScreen(),
+        '/txnSettings': (context) => const TransactionSettingsScreen(),
+        '/paymentIn': (context) => const PaymentInScreen(),
+        '/saleReturn': (context) => const SaleReturnScreen(),
+        '/deliveryChallan': (context) => const DeliveryChallanScreen(),
+        '/estimateQuote': (context) => const EstimateQuoteScreen(),
+        '/saleOrder': (context) => const SaleOrderScreen(),
+        '/saleInvoice': (context) => const SaleInvoiceScreen(),
+        '/paymentOut': (context) => const PaymentOutScreen(),
+        '/purchaseReturn': (context) => const PurchaseReturnScreen(),
+        '/purchaseOrder': (context) => const PurchaseOrderScreen(),
+        '/expense': (context) => const ExpenseScreen(),
+        '/otherIncome': (context) => const OtherIncomeScreen(),
+        '/eInvoiceLogin': (context) => const EInvoiceLoginScreen(),
+        '/p2pTransfer': (context) => const P2PTransferScreen(),
       },
     );
   }

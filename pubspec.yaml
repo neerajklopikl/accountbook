@@ -18,8 +18,10 @@ dependencies:
   cloud_firestore: ^5.1.0
   firebase_auth: ^5.1.2
   
-  # FIX: Added http package
   http: ^1.2.1
+  
+  # ADD THIS LINE
+  dotted_border: ^2.1.0
 
 
 dev_dependencies:
