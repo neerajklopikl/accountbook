@@ -9,6 +9,7 @@ import 'package:accountbook/screens/create_payment_receipt_screen.dart';
 import 'package:accountbook/screens/credit_note_list_screen.dart';
 import 'package:accountbook/screens/debit_note_list_screen.dart';
 import 'package:accountbook/screens/e_way_bill_login_screen.dart';
+import 'package:accountbook/screens/gstr1_report_screen.dart';
 import 'package:accountbook/screens/payment_receipt_list_screen.dart';
 import 'package:accountbook/screens/payments_made_list_screen.dart';
 import 'package:accountbook/screens/setup_digital_signature_screen.dart';
@@ -155,6 +156,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // Add new routes
+        '/gstr1Report': (context) => const GSTR1ReportScreen(),
         '/partyList': (context) => const PartyListScreen(),
         '/addParty': (context) => const AddPartyScreen(),
         '/productList': (context) => const ProductListScreen(),

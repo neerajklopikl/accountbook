@@ -41,7 +41,7 @@ class ReportsListScreen extends StatelessWidget {
           context,
           title: 'GST reports',
           reports: {
-            'GSTR-1': '/gstReports',
+            'GSTR-1': '/gstr1Report', // MODIFIED: Route to GSTR-1 screen
             'GSTR-2': '/gstReports',
             'GSTR-3B': '/gstReports',
             'GST Transaction report': '/gstReports',
@@ -133,13 +133,15 @@ class ReportsListScreen extends StatelessWidget {
           ),
           const Divider(height: 1),
           ...reports.entries.map((entry) {
+            bool isPremium = entry.key.contains('Bill Wise Profit') ||
+                entry.key.contains('Balance Sheet');
+                
             return ListTile(
               title: Text(entry.key),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (entry.key.contains('Bill Wise Profit') ||
-                      entry.key.contains('Balance Sheet'))
+                  if (isPremium)
                     const Icon(Icons.lock, size: 16, color: Colors.amber),
                   const SizedBox(width: 8),
                   const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
@@ -147,8 +149,7 @@ class ReportsListScreen extends StatelessWidget {
               ),
               onTap: entry.value != null
                   ? () {
-                      if (entry.key.contains('Bill Wise Profit') ||
-                          entry.key.contains('Balance Sheet')) {
+                      if (isPremium) {
                         showDialog(
                             context: context,
                             builder: (context) => const PremiumFeatureDialog());
