@@ -11,6 +11,8 @@ class InvoiceItem {
   final double taxableValue;
   final double igstRate;
   final double igstAmount;
+  final double cgstAmount;
+  final double sgstAmount;
   final double total;
 
   InvoiceItem({
@@ -24,6 +26,8 @@ class InvoiceItem {
     required this.taxableValue,
     required this.igstRate,
     required this.igstAmount,
+    required this.cgstAmount,
+    required this.sgstAmount,
     required this.total,
   });
 }

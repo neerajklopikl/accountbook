@@ -9,20 +9,6 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 class PdfGenerator {
-  // --- MASTER GENERATION FUNCTION ---
-  static Future<Uint8List> generate(String template, InvoiceData data) async {
-    switch (template) {
-      case 'Tally':
-        return generateTallyInvoice(data);
-      case 'Clean':
-        return generateCleanInvoice(data);
-      case 'Detailed':
-        return generateDetailedInvoice(data);
-      case 'Classic':
-      default:
-        return generateClassicInvoice(data);
-    }
-  }
 
   // =================================================================
   // CLASSIC INVOICE IMPLEMENTATION
@@ -34,7 +20,7 @@ class PdfGenerator {
     ));
 
     final qrCode = _buildQrCode('E-Invoice Data Placeholder');
-    final upiQrCode = _buildQrCode('upi://pay?pa=${data.upiId}&pn=PayeeName&am=${data.totalAmount}');
+    final upiQrCode = _buildQrCode('upi://pay?pa=${data.upiId}&pn=${data.companyName}&am=${data.totalAmount}');
 
     pdf.addPage(
       pw.MultiPage(
@@ -281,18 +267,139 @@ class PdfGenerator {
      pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(28),
+        margin: const pw.EdgeInsets.all(32),
         build: (pw.Context context) => [
-          pw.Text('Tally Invoice', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-           pw.Divider(),
-           pw.SizedBox(height: 10),
-           pw.Text('This is a placeholder for the Tally-style invoice format.'),
-           pw.SizedBox(height: 10),
-           pw.Text('The structure would be built here using Rows, Columns, and Tables similar to the Classic format, but with different styling and layout to match the Tally screenshot.')
+          pw.Center(child: pw.Text('TAX INVOICE', style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+          pw.SizedBox(height: 8),
+          pw.Center(child: pw.Text(data.companyName, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14))),
+          pw.Center(child: pw.Text(data.companyAddress.replaceAll('\n', ', '), style: const pw.TextStyle(fontSize: 9))),
+           pw.SizedBox(height: 12),
+          _tallyBuildPartyAndInvoiceDetails(data),
+          pw.SizedBox(height: 12),
+          _tallyBuildItemTable(data),
+          pw.SizedBox(height: 12),
+          _tallyBuildTotals(data),
+          pw.SizedBox(height: 20),
+          _classicBuildTermsAndSignature(data),
         ]
       )
     );
     return pdf.save();
+  }
+
+   static pw.Widget _tallyBuildPartyAndInvoiceDetails(InvoiceData data) {
+    return pw.Table(
+      border: pw.TableBorder.all(),
+      columnWidths: {0: const pw.FlexColumnWidth(1), 1: const pw.FlexColumnWidth(1)},
+      children: [
+        pw.TableRow(
+          children: [
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _detailRow('Invoice No.', data.invoiceNumber, fontSize: 9),
+                  _detailRow('Date', DateFormat('dd-MMM-yy').format(data.invoiceDate), fontSize: 9),
+                ]
+              )
+            ),
+             pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Column(
+                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  _detailRow('Mode/Terms of Payment', '', fontSize: 9),
+                   _detailRow('Other Reference(s)', '', fontSize: 9),
+                ]
+              )
+            )
+          ]
+        ),
+        pw.TableRow(
+          children: [
+             pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text('Buyer', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9)),
+                  pw.Text(data.buyerName, style: const pw.TextStyle(fontSize: 9)),
+                  pw.Text(data.buyerAddress, style: const pw.TextStyle(fontSize: 9)),
+                  pw.Text('GSTIN/UIN: ${data.buyerGstin}', style: const pw.TextStyle(fontSize: 9)),
+                ]
+              )
+            ),
+             pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Column(
+                 crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                   _detailRow('Despatch Doc No.', '', fontSize: 9),
+                   _detailRow('Delivery Note Date', '', fontSize: 9),
+                   _detailRow('Despatched through', data.transporterName, fontSize: 9),
+                   _detailRow('Destination', '', fontSize: 9),
+                ]
+              )
+            )
+          ]
+        )
+      ]
+    );
+  }
+
+  static pw.Widget _tallyBuildItemTable(InvoiceData data) {
+      const tableHeaders = ['Sr. No.', 'Description of Goods', 'HSN/SAC', 'Quantity', 'Rate', 'per', 'Amount'];
+      return pw.Table.fromTextArray(
+        headers: tableHeaders,
+        data: data.items.map((item) => [
+          item.srNo.toString(),
+          item.name,
+          item.hsnSac,
+          '${item.quantity.toStringAsFixed(2)} ${item.unit}',
+          item.rate.toStringAsFixed(2),
+          item.unit,
+          (item.quantity * item.rate).toStringAsFixed(2),
+        ]).toList(),
+        border: pw.TableBorder.all(),
+        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9),
+        cellStyle: const pw.TextStyle(fontSize: 9),
+        cellAlignments: {
+           0: pw.Alignment.center,
+           1: pw.Alignment.centerLeft,
+           2: pw.Alignment.center,
+           3: pw.Alignment.centerRight,
+           4: pw.Alignment.centerRight,
+           5: pw.Alignment.center,
+           6: pw.Alignment.centerRight,
+        }
+      );
+  }
+
+  static pw.Widget _tallyBuildTotals(InvoiceData data) {
+    return pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Expanded(
+          child: pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text('Amount Chargeable (in words)', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9)),
+              pw.Text(data.totalAmountInWords, style: const pw.TextStyle(fontSize: 9)),
+            ]
+          )
+        ),
+        pw.Table(
+          columnWidths: {0: const pw.FlexColumnWidth(2), 1: const pw.FlexColumnWidth(1)},
+          children: [
+            pw.TableRow(children: [pw.Text('Total', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9)), pw.Text(data.items.fold<double>(0, (sum, item) => sum + item.rate * item.quantity).toStringAsFixed(2), textAlign: pw.TextAlign.right, style: const pw.TextStyle(fontSize: 9))]),
+            pw.TableRow(children: [pw.Text('IGST', style: pw.TextStyle(fontSize: 9)), pw.Text(data.items.fold<double>(0, (sum, item) => sum + item.igstAmount).toStringAsFixed(2), textAlign: pw.TextAlign.right, style: const pw.TextStyle(fontSize: 9))]),
+             pw.TableRow(children: [pw.Text('Total Amount', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9)), pw.Text(data.totalAmount.toStringAsFixed(2), textAlign: pw.TextAlign.right, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9))]),
+
+          ]
+        )
+      ]
+    );
   }
 
   // =================================================================
@@ -303,18 +410,84 @@ class PdfGenerator {
      pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(28),
+        margin: const pw.EdgeInsets.all(32),
         build: (pw.Context context) => [
-          pw.Text('Clean Invoice', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-           pw.Divider(),
-           pw.SizedBox(height: 10),
-           pw.Text('This is a placeholder for the Clean-style invoice format.'),
-           pw.SizedBox(height: 10),
-           pw.Text('This layout would be simpler, perhaps with more whitespace and a modern font.')
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            children: [
+               pw.Text('INVOICE', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 24, color: PdfColors.blueGrey)),
+               pw.Text(data.companyName, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
+            ]
+          ),
+          pw.Divider(height: 20),
+          pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                children: [
+                  pw.Text('Billed To', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.Text(data.buyerName),
+                  pw.Text(data.buyerAddress),
+                  pw.Text('GSTIN: ${data.buyerGstin}'),
+                ]
+              ),
+              pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                children: [
+                  _detailRow('Invoice #', data.invoiceNumber),
+                  _detailRow('Invoice Date', DateFormat('dd MMM, yyyy').format(data.invoiceDate)),
+                ]
+              ),
+            ]
+          ),
+           pw.SizedBox(height: 30),
+            _cleanBuildItemTable(data),
+            pw.SizedBox(height: 20),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.end,
+              children: [
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    _totalRow('Subtotal', data.items.fold<double>(0, (sum, item) => sum + item.taxableValue).toStringAsFixed(2)),
+                    _totalRow('Tax (IGST)', data.items.fold<double>(0, (sum, item) => sum + item.igstAmount).toStringAsFixed(2)),
+                    pw.Divider(),
+                     _totalRow('Total', data.totalAmount.toStringAsFixed(2), isBold: true),
+                  ]
+                )
+              ]
+            ),
+             pw.SizedBox(height: 40),
+             pw.Text('Thank you for your business!', style: const pw.TextStyle(color: PdfColors.grey)),
         ]
       )
     );
     return pdf.save();
+  }
+
+  static pw.Widget _cleanBuildItemTable(InvoiceData data) {
+     const tableHeaders = ['Description', 'Qty', 'Unit Price', 'Total'];
+      return pw.Table.fromTextArray(
+        headers: tableHeaders,
+        data: data.items.map((item) => [
+          item.name,
+          item.quantity.toString(),
+          item.rate.toStringAsFixed(2),
+          item.total.toStringAsFixed(2),
+        ]).toList(),
+        border: null,
+        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.blueGrey, fontSize: 10),
+        headerDecoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey))),
+        cellStyle: const pw.TextStyle(fontSize: 10),
+        cellAlignments: {
+           0: pw.Alignment.centerLeft,
+           1: pw.Alignment.centerRight,
+           2: pw.Alignment.centerRight,
+           3: pw.Alignment.centerRight,
+        }
+      );
   }
 
   // =================================================================
@@ -327,18 +500,78 @@ class PdfGenerator {
         pageFormat: PdfPageFormat.a4,
         margin: const pw.EdgeInsets.all(28),
         build: (pw.Context context) => [
-          pw.Text('Detailed Invoice', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16)),
-           pw.Divider(),
-           pw.SizedBox(height: 10),
-           pw.Text('This is a placeholder for the Detailed-style invoice format.'),
-           pw.SizedBox(height: 10),
-           pw.Text('This format might include extra columns in the item table, such as batch numbers, expiry dates, or more detailed tax breakdowns (CGST, SGST).')
+          pw.Header(
+            level: 0,
+            child: pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+              children: <pw.Widget>[
+                pw.Text('TAX INVOICE', textScaleFactor: 1.5, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                _buildQrCode('E-Invoice Data Placeholder')
+              ],
+            ),
+          ),
+          pw.Row(
+             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+             crossAxisAlignment: pw.CrossAxisAlignment.start,
+             children: [
+                pw.Expanded(child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text(data.companyName, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    pw.Text(data.companyAddress),
+                    pw.Text('GSTIN: ${data.companyGstin}'),
+                  ]
+                )),
+                pw.SizedBox(width: 20),
+                pw.Expanded(child: pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                     _detailRow('Invoice No.', data.invoiceNumber),
+                     _detailRow('Date', DateFormat('dd/MM/yyyy').format(data.invoiceDate)),
+                  ]
+                )),
+             ]
+          ),
+          pw.Divider(height: 20),
+          _detailedItemTable(data),
+          pw.SizedBox(height: 20),
+          _classicBuildTotalsAndBankDetails(data, _buildQrCode('upi://pay?pa=${data.upiId}&pn=${data.companyName}&am=${data.totalAmount}')),
+          pw.SizedBox(height: 20),
+          _classicBuildTermsAndSignature(data),
+
         ]
       )
     );
     return pdf.save();
   }
 
+  static pw.Widget _detailedItemTable(InvoiceData data) {
+    const tableHeaders = ['Sr.No', 'Product', 'HSN', 'Qty', 'Rate', 'Taxable', 'CGST', 'SGST', 'IGST', 'CESS', 'Total'];
+     return pw.Table.fromTextArray(
+        headers: tableHeaders,
+        data: data.items.map((item) => [
+          item.srNo.toString(),
+          item.name,
+          item.hsnSac ?? '',
+          item.quantity.toString(),
+          item.rate.toStringAsFixed(2),
+          item.taxableValue.toStringAsFixed(2),
+          item.cgstAmount.toStringAsFixed(2),
+          item.sgstAmount.toStringAsFixed(2),
+          item.igstAmount.toStringAsFixed(2),
+          '0.00', // CESS
+          item.total.toStringAsFixed(2),
+        ]).toList(),
+        border: pw.TableBorder.all(),
+        headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+        cellStyle: const pw.TextStyle(fontSize: 8),
+        headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
+        cellAlignments: {
+          for (var i = 0; i < tableHeaders.length; i++) i: (i == 1 ? pw.Alignment.centerLeft : pw.Alignment.centerRight),
+          0: pw.Alignment.center,
+        },
+     );
+  }
 
   // --- HELPER WIDGETS ---
   static pw.BarcodeWidget _buildQrCode(String data) {
@@ -350,13 +583,13 @@ class PdfGenerator {
     );
   }
 
-  static pw.Widget _detailRow(String label, String value, {bool boldValue = false, double fontSize = 8}) {
+  static pw.Widget _detailRow(String label, String value, {bool boldValue = false, double fontSize = 9}) {
     return pw.Padding(
       padding: const pw.EdgeInsets.symmetric(vertical: 1),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.Text('$label:', style: pw.TextStyle(fontSize: fontSize)),
+          pw.Text('$label:', style: pw.TextStyle(fontSize: fontSize, color: PdfColors.grey700)),
           pw.Text(value, style: pw.TextStyle(fontWeight: boldValue ? pw.FontWeight.bold : pw.FontWeight.normal, fontSize: fontSize)),
         ],
       ),
@@ -364,10 +597,9 @@ class PdfGenerator {
   }
 
   static pw.Widget _totalRow(String label, String value, {bool isBold = false}) {
-    final style = pw.TextStyle(fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal, fontSize: 8);
+    final style = pw.TextStyle(fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal, fontSize: 9);
     return pw.Container(
-      decoration: const pw.BoxDecoration(border: pw.Border(bottom: pw.BorderSide())),
-      padding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: const pw.EdgeInsets.symmetric(horizontal: 6, vertical: 3),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
