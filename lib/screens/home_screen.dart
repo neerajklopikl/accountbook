@@ -109,15 +109,23 @@ class _HomeScreenState extends State<HomeScreen> {
       FeatureItemModel(
           icon: Icons.description,
           title: 'Proforma Invoices',
-          color: Colors.teal),
+          color: Colors.teal,
+          route: '/quotationList'),
       FeatureItemModel(
           icon: Icons.payment,
           title: 'Payment Receipts',
-          color: Colors.redAccent),
+          color: Colors.redAccent,
+          route: '/paymentReceiptList'),
       FeatureItemModel(
-          icon: Icons.money_off, title: 'Payments Made', color: Colors.red),
+          icon: Icons.money_off,
+          title: 'Payments Made',
+          color: Colors.red,
+          route: '/paymentsMadeList'), // FIX: Added route for navigation
       FeatureItemModel(
-          icon: Icons.request_page, title: 'Debit Notes', color: Colors.green),
+          icon: Icons.request_page,
+          title: 'Debit Notes',
+          color: Colors.green,
+          route: '/debitNoteList'), // FIX: Added route for navigation
       FeatureItemModel(
           icon: Icons.credit_score,
           title: 'Credit Notes',
@@ -199,9 +207,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
           _buildSectionHeader(context, 'Other Documents'),
           _buildResponsiveGrid(context,
-              _showAllDocuments ? otherDocuments : otherDocuments.take(4).toList()),
+              _showAllDocuments ? otherDocuments : otherDocuments.take(8).toList()),
 
-          if (otherDocuments.length > 4) ...[
+          if (otherDocuments.length > 8) ...[
             const SizedBox(height: 8),
             Center(
               child: TextButton(
@@ -331,3 +339,4 @@ class FeatureItemModel {
     this.onTap,
   });
 }
+

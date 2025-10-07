@@ -1,7 +1,9 @@
 // lib/main.dart
 
 import 'package:accountbook/screens/add_bank_account_screen.dart';
+import 'package:accountbook/screens/create_payment_receipt_screen.dart';
 import 'package:accountbook/screens/e_way_bill_login_screen.dart';
+import 'package:accountbook/screens/payment_receipt_list_screen.dart';
 import 'package:flutter/material.dart';
 // Import Firebase
 // import 'package:firebase_core/firebase_core.dart';
@@ -151,6 +153,8 @@ class MyApp extends StatelessWidget {
         '/bankDetails': (context) => const BankDetailsScreen(),
         '/addBankAccount': (context) => const AddBankAccountScreen(),
         '/eWayBillLogin': (context) => const EWayBillLoginScreen(),
+        '/paymentReceiptList': (context) => const PaymentReceiptListScreen(),
+        '/createPaymentReceipt': (context) => const CreatePaymentReceiptScreen(),
 
 
         // Existing routes
