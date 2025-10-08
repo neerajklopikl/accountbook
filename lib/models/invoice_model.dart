@@ -4,7 +4,7 @@ class InvoiceItem {
   final int srNo;
   final String name;
   final String? hsnSac;
-  final int quantity;
+  final double quantity;
   final String unit;
   final double rate;
   final double discount;
@@ -33,41 +33,30 @@ class InvoiceItem {
 }
 
 class InvoiceData {
-  // Company Details
+  final String? id;
   final String companyName;
   final String companyAddress;
   final String companyGstin;
-
-  // Invoice Details
   final String invoiceNumber;
   final DateTime invoiceDate;
   final String poNumber;
   final String transporterName;
   final String ewayBillNumber;
-
-  // Party Details
   final String dispatchFrom;
   final String buyerName;
   final String buyerAddress;
   final String buyerGstin;
-
-  // Items
   final List<InvoiceItem> items;
-  
-  // Totals
   final double totalAmount;
   final String totalAmountInWords;
-
-  // Bank Details
   final String bankAccountNo;
   final String bankIfsc;
   final String bankName;
   final String upiId;
-
-  // Terms
   final List<String> termsAndConditions;
 
   InvoiceData({
+    this.id,
     required this.companyName,
     required this.companyAddress,
     required this.companyGstin,
@@ -89,4 +78,30 @@ class InvoiceData {
     required this.upiId,
     required this.termsAndConditions,
   });
+
+  factory InvoiceData.fromJson(Map<String, dynamic> json) {
+    return InvoiceData(
+      id: json['_id'],
+      invoiceNumber: json['invoiceNumber'],
+      buyerName: json['customerName'],
+      invoiceDate: DateTime.parse(json['date']),
+      totalAmount: json['totalAmount'].toDouble(),
+      companyName: '',
+      companyAddress: '',
+      companyGstin: '',
+      poNumber: '',
+      transporterName: '',
+      ewayBillNumber: '',
+      dispatchFrom: '',
+      buyerAddress: '',
+      buyerGstin: '',
+      items: [],
+      totalAmountInWords: '',
+      bankAccountNo: '',
+      bankIfsc: '',
+      bankName: '',
+      upiId: '',
+      termsAndConditions: [],
+    );
+  }
 }
